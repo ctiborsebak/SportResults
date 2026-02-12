@@ -1,0 +1,21 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    
+jobs:
+  test:
+    name: Run All Tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Tests
+        run: |
+          xcodebuild test \
+            -project Sport_Results/Sport_Results.xcodeproj \
+            -scheme Sport_Results \
+            -testPlan AllTests \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -parallel-testing-enabled YES
