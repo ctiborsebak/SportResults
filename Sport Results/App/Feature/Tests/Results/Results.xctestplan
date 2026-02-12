@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "ABFCB585-866B-4912-BE3B-F18BA055C039",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ResultsTests",
+        "name" : "ResultsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
