@@ -13,9 +13,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Tests
         run: |
-          xcodebuild test \
-            -project Sport Results/Sport Results.xcodeproj \
-            -scheme Sport Results \
-            -testPlan AllTests \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
-            -parallel-testing-enabled YES
+         xcodebuild test \
+          -project "Sport Results/Sport Results.xcodeproj" \
+          -scheme "Sport Results" \
+          -testPlan "AllTests" \
+          -destination "platform=iOS Simulator,OS=latest,name=iPhone 16" \
+          -parallel-testing-enabled YES
