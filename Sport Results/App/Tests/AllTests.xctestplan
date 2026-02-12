@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "8B3F2664-C8F9-49F9-B6D1-00682B81F8D3",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:App\/Feature",
+        "identifier" : "ResultsTests",
+        "name" : "ResultsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Generic",
+        "identifier" : "ArchitectureTests",
+        "name" : "ArchitectureTests"
+      }
+    }
+  ],
+  "version" : 1
+}

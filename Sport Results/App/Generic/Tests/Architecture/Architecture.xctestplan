@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "9DB96D7E-15A7-4D8D-9596-1AF0BB009494",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ArchitectureTests",
+        "name" : "ArchitectureTests"
+      }
+    }
+  ],
+  "version" : 1
+}
