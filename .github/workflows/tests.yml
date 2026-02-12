@@ -14,8 +14,8 @@ jobs:
       - name: Run Tests
         run: |
           xcodebuild test \
-            -project Sport_Results/Sport_Results.xcodeproj \
-            -scheme Sport_Results \
+            -project Sport Results/Sport Results.xcodeproj \
+            -scheme Sport Results \
             -testPlan AllTests \
             -destination 'platform=iOS Simulator,name=iPhone 16' \
             -parallel-testing-enabled YES
