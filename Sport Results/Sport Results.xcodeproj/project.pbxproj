@@ -21,6 +21,7 @@
 				Domain,
 				Feature,
 				Generic,
+				Theme,
 			);
 			target = 8F72FBA82F3DCE5300E1B6EC /* Sport Results */;
 		};
