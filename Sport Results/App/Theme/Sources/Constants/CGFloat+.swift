@@ -1,6 +1,12 @@
 import CoreGraphics
 
-extension CGFloat {
+public extension CGFloat {
+    /// 4 px
+    static let xxsmall: CGFloat = 4
+    /// 8 px
+    static let xsmall: CGFloat = 8
+    /// 16 px
     static let small: CGFloat = 16
+    /// 24 px
     static let medium: CGFloat = 24
 }

@@ -27,7 +27,7 @@ public struct Card<Content: View>: View {
 #Preview("Card") {
     Card(accentColor: .Accent.blue) {
         VStack(alignment: .leading, spacing: .small) {
-            Text("Title")
+            "Title".text
                 .font(.title)
 
             Button("Button") {}
