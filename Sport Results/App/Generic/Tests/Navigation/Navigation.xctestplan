@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "D880B3D9-F9FD-4FE7-BFD5-229B33AA788E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "NavigationTests",
+        "name" : "NavigationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
