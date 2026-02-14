@@ -1,6 +1,8 @@
 import Foundation
 
-public struct MatchResult {
+public struct MatchResult: Identifiable {
+    public let id = UUID()
+
     public let discipline: Discipline
     public let name: String
     public let location: String

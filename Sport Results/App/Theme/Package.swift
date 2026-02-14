@@ -11,10 +11,16 @@ let package = Package(
             targets: ["Theme"]
         ),
     ],
+    dependencies: [
+        .package(path: "../Localizations")
+    ],
     targets: [
         .target(
-          name: "Theme",
-          path: "Sources"
+            name: "Theme",
+            dependencies: [
+                .product(name: "Localizations", package: "Localizations")
+            ],
+            path: "Sources"
         )
-      ]
+    ]
 )

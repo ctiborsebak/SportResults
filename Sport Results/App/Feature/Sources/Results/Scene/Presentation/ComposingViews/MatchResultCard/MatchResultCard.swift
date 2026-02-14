@@ -48,16 +48,14 @@ struct MatchResultCard: View {
                         )
                     )
 
-                    HStack(spacing: .xxsmall) {
-                        ScoreView(
-                            state: .init(
-                                homeScore: state.home.score,
-                                awayScore: state.away.score,
-                                duration: state.duration
-                            )
+                    ScoreView(
+                        state: .init(
+                            homeScore: state.home.score,
+                            awayScore: state.away.score,
+                            duration: state.duration
                         )
-                        .padding(.horizontal, .xsmall)
-                    }
+                    )
+                    .padding(.horizontal, .xsmall)
 
                     ParticipantView(
                         state: .init(

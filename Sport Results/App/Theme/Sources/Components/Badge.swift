@@ -9,7 +9,7 @@ public struct Badge: View {
 
     public var body: some View {
         state.image
-            .font(.system(size: .medium, weight: .medium))
+            .fontWeight(.medium)
             .foregroundColor(state.textColor)
             .padding(.xsmall)
             .background(

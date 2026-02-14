@@ -9,4 +9,8 @@ public extension CGFloat {
     static let small: CGFloat = 16
     /// 24 px
     static let medium: CGFloat = 24
+    // 32 px
+    static let large: CGFloat = 36
+    // 64 px
+    static let xlarge: CGFloat = 64
 }
