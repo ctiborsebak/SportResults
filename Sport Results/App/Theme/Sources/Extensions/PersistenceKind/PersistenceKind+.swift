@@ -1,8 +1,7 @@
 import Domain
 import SwiftUI
-import Theme
 
-extension PersistenceKind {
+public extension PersistenceKind {
     var textColor: Color {
         switch self {
 
@@ -11,17 +10,6 @@ extension PersistenceKind {
 
         case .remote:
             return .Text.blue
-        }
-    }
-
-    var accentColor: Color {
-        switch self {
-
-        case .local:
-            return .Accent.mint
-
-        case .remote:
-            return .Accent.blue
         }
     }
 

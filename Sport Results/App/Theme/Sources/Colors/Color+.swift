@@ -3,6 +3,7 @@ import SwiftUI
 public extension Color {
     enum Accent {
         public static let mint = Color(.mintAccent)
+        public static let neutral = Color(.neutralAccent)
         public static let blue = Color(.blueAccent)
     }
 

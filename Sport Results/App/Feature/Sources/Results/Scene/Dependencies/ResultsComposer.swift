@@ -1,8 +1,8 @@
 import Architecture
 import FactoryKit
+import Navigation
 import SwiftUI
 
-@MainActor
 public struct ResultsComposer: Composing {
 
     public init() {}
@@ -10,8 +10,11 @@ public struct ResultsComposer: Composing {
     public func make() -> some View {
         let container = Container.shared
 
+        let viewFactory = container.resultsViewFactory.resolve()
         let viewModel = container.resultsViewModel.resolve()
 
-        return ResultsView(viewModel: viewModel)
+        return NavigationContainer(factory: viewFactory) {
+            ResultsView(viewModel: viewModel)
+        }
     }
 }

@@ -16,6 +16,7 @@ let package = Package(
         .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "2.5.3")),
         .package(path: "../Domain"),
         .package(path: "../Generic"),
+        .package(path: "../Localizations"),
         .package(path: "../Theme"),
     ],
     targets: [
@@ -25,6 +26,9 @@ let package = Package(
                 .product(name: "Architecture", package: "Generic"),
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "FactoryKit", package: "Factory"),
+                .product(name: "Localizations", package: "Localizations"),
+                .product(name: "ModelConverter", package: "Generic"),
+                .product(name: "Navigation", package: "Generic"),
                 .product(name: "Theme", package: "Theme"),
             ]
         ),

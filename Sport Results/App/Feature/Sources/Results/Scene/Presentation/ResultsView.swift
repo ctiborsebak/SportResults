@@ -1,7 +1,10 @@
+import Localizations
+import Navigation
 import SwiftUI
 
 public struct ResultsView: View {
 
+    @Environment(Navigator.self) var navigator: Navigator?
     @State var viewModel: ResultsViewModel
 
     public var body: some View {
@@ -30,6 +33,18 @@ public struct ResultsView: View {
             .listStyle(.plain)
         }
         .padding(.vertical, .small)
+        .navigationBarTitleDisplayMode(.large)
+        .navigationTitle("key_results_title".localized)
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    navigator?.presentModal(ResultsRoute.addResult)
+                } label: {
+                    Image(systemName: "plus")
+                        .padding(.xsmall)
+                }
+            }
+        }
     }
 }
 
