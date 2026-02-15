@@ -52,23 +52,111 @@ struct NavigatorTests {
     }
 
     @Test
-    func navigator_should_update_modal_when_presenting_modal() {
+    func navigator_should_append_modal_when_presenting() {
         let navigator = Navigator()
-        let destination = "Settings"
 
-        navigator.presentModal(destination)
+        navigator.presentModal("Settings")
 
-        #expect(navigator.presentedModal == AnyHashable(destination))
+        #expect(navigator.presentedModals.count == 1)
+        #expect(navigator.presentedModals.first?.destination == AnyHashable("Settings"))
     }
 
     @Test
-    func navigator_should_clear_modal_when_dismissing() {
+    func navigator_should_present_modal_without_ondismiss() {
+        let navigator = Navigator()
+
+        navigator.presentModal("Settings")
+
+        #expect(navigator.presentedModals.first?.onDismiss == nil)
+    }
+
+    @Test
+    func navigator_should_remove_last_modal_when_dismissing() {
         let navigator = Navigator()
         navigator.presentModal("Settings")
 
         navigator.dismissModal()
 
-        #expect(navigator.presentedModal == nil)
+        #expect(navigator.presentedModals.isEmpty)
+    }
+
+    @Test
+    func navigator_should_invoke_ondismiss_when_dismissing() {
+        let navigator = Navigator()
+        var dismissed = false
+
+        navigator.presentModal("Settings") { _ in
+            dismissed = true
+        }
+
+        navigator.dismissModal()
+
+        #expect(dismissed)
+    }
+
+    @Test
+    func navigator_should_pass_result_to_ondismiss() {
+        let navigator = Navigator()
+        var receivedResult: Any?
+
+        navigator.presentModal("Editor") { result in
+            receivedResult = result
+        }
+
+        navigator.dismissModal(returning: "SavedValue")
+
+        let stringResult = receivedResult as? String
+        #expect(stringResult == "SavedValue")
+    }
+
+    @Test
+    func navigator_should_pass_nil_result_when_dismissing_without_result() {
+        let navigator = Navigator()
+        var closureCalled = false
+        var receivedResult: Any? = "sentinel"
+
+        navigator.presentModal("Editor") { result in
+            closureCalled = true
+            receivedResult = result
+        }
+
+        navigator.dismissModal()
+
+        #expect(closureCalled)
+        #expect(receivedResult == nil)
+    }
+
+    @Test
+    func navigator_should_stack_multiple_modals() {
+        let navigator = Navigator()
+
+        navigator.presentModal("First")
+        navigator.presentModal("Second")
+
+        #expect(navigator.presentedModals.count == 2)
+        #expect(navigator.presentedModals[0].destination == AnyHashable("First"))
+        #expect(navigator.presentedModals[1].destination == AnyHashable("Second"))
+    }
+
+    @Test
+    func navigator_should_dismiss_only_topmost_modal() {
+        let navigator = Navigator()
+        navigator.presentModal("First")
+        navigator.presentModal("Second")
+
+        navigator.dismissModal()
+
+        #expect(navigator.presentedModals.count == 1)
+        #expect(navigator.presentedModals.first?.destination == AnyHashable("First"))
+    }
+
+    @Test
+    func navigator_should_not_crash_when_dismissing_empty_modals() {
+        let navigator = Navigator()
+
+        navigator.dismissModal()
+
+        #expect(navigator.presentedModals.isEmpty)
     }
 
     @Test

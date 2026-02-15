@@ -7,6 +7,10 @@ public extension Color {
         public static let blue = Color(.blueAccent)
     }
 
+    enum Semantic {
+        public static let error = Color(.error)
+    }
+
     enum Text {
         public static let primary = Color(.textPrimary)
         public static let secondary = Color(.textSecondary)

@@ -2,14 +2,14 @@ import SwiftUI
 
 public struct AppButton: View {
     let onClickAction: () -> Void
-    let icon: Image
-    let caption: String
+    let icon: Image?
+    let caption: String?
     let isLoading: Bool
 
     public init(
         onClickAction: @escaping () -> Void,
-        icon: Image,
-        caption: String,
+        icon: Image? = nil,
+        caption: String? = nil,
         isLoading: Bool = false
     ) {
         self.onClickAction = onClickAction
@@ -30,7 +30,7 @@ public struct AppButton: View {
                     icon
                 }
 
-                caption.text
+                caption?.text
             }
             .padding(.vertical, .xsmall)
             .padding(.horizontal, .small)

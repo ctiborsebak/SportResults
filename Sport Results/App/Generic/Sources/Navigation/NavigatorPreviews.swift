@@ -1,4 +1,5 @@
 import SwiftUI
+import Observation
 import Theme
 
 private enum PreviewRoute: Hashable {
@@ -6,32 +7,52 @@ private enum PreviewRoute: Hashable {
     case detail(id: String)
     case settings
     case profile
+    case modalB
+    case modalC
 }
 
 private struct HomeView: View {
     @Environment(Navigator.self) var navigator
+    @State private var lastResult: String?
 
     var body: some View {
         List {
-            Section("Stack Navigation") {
-                Button("Push List") {
+            Section(String(localized: "Stack Navigation")) {
+                Button(String(localized: "Push List")) {
                     navigator.navigate(to: PreviewRoute.list)
                 }
-                Button("Push Detail (Direct)") {
+                Button(String(localized: "Push Detail (Direct)")) {
                     navigator.navigate(to: PreviewRoute.detail(id: "direct"))
                 }
             }
 
-            Section("Modals (Nested Flows)") {
-                Button("Present Settings (Sheet)") {
+            Section(String(localized: "Modals (Nested Flows)")) {
+                Button(String(localized: "Present Settings (Sheet)")) {
                     navigator.presentModal(PreviewRoute.settings)
                 }
-                Button("Present Profile (Full Screen)") {
+                Button(String(localized: "Present Profile (Full Screen)")) {
                     navigator.presentFullScreen(PreviewRoute.profile)
                 }
             }
+
+            Section(String(localized: "Stacked Modals Demo")) {
+                Button(String(localized: "Present Modal A → B → C")) {
+                    navigator.presentModal(PreviewRoute.modalB) { result in
+                        if let value = result as? String {
+                            lastResult = value
+                        } else {
+                            lastResult = String(localized: "Dismissed without result")
+                        }
+                    }
+                }
+
+                if let lastResult {
+                    Text(String(localized: "Result from modal chain: \(lastResult)"))
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
-        .navigationTitle("Home")
+        .navigationTitle(String(localized: "Home"))
     }
 }
 
@@ -40,11 +61,11 @@ private struct ListView: View {
 
     var body: some View {
         List(1...5, id: \.self) { i in
-            Button("Item \(i)") {
+            Button(String(localized: "Item \(i)")) {
                 navigator.navigate(to: PreviewRoute.detail(id: "\(i)"))
             }
         }
-        .navigationTitle("List")
+        .navigationTitle(String(localized: "List"))
     }
 }
 
@@ -54,24 +75,18 @@ private struct DetailView: View {
 
     var body: some View {
         VStack(spacing: .small) {
-            Text("Detail for ID: \(id)")
+            Text(String(localized: "Detail for ID: \(id)"))
                 .font(.title)
 
-            Button("Pop") {
+            Button(String(localized: "Pop")) {
                 navigator.pop()
             }
 
-            Button("Pop to Root") {
+            Button(String(localized: "Pop to Root")) {
                 navigator.popToRoot()
             }
-
-            if id.starts(with: "nested") {
-                Button("Pop Modal (Parent)") {
-                    print("Requesting parent dismissal")
-                }
-            }
         }
-        .navigationTitle("Detail")
+        .navigationTitle(String(localized: "Detail"))
     }
 }
 
@@ -91,19 +106,19 @@ private struct SettingsRootView: View {
 
     var body: some View {
         List {
-            Section("Settings") {
-                Button("Account (Push)") {
+            Section(String(localized: "Settings")) {
+                Button(String(localized: "Account (Push)")) {
                     navigator.navigate(to: PreviewRoute.detail(id: "nested-Account"))
                 }
-                Button("Privacy (Push)") {
+                Button(String(localized: "Privacy (Push)")) {
                     navigator.navigate(to: PreviewRoute.detail(id: "nested-Privacy"))
                 }
             }
         }
-        .navigationTitle("Settings Flow")
+        .navigationTitle(String(localized: "Settings Flow"))
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Dismiss") {
+                Button(String(localized: "Dismiss")) {
                     navigator.dismiss()
                 }
             }
@@ -129,27 +144,96 @@ private struct ProfileRootView: View {
         ZStack {
             Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
             VStack(spacing: .small) {
-                Text("Profile Flow (Full Screen)")
+                Text(String(localized: "Profile Flow (Full Screen)"))
                     .font(.title)
 
-                Button("Push Edit Profile") {
+                Button(String(localized: "Push Edit Profile")) {
                     navigator.navigate(to: PreviewRoute.detail(id: "nested-EditProfile"))
                 }
 
-                Button("Push Security") {
+                Button(String(localized: "Push Security")) {
                     navigator.navigate(to: PreviewRoute.detail(id: "nested-Security"))
                 }
 
                 Spacer()
             }
         }
-        .navigationTitle("My Profile")
+        .navigationTitle(String(localized: "My Profile"))
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Close") {
+                Button(String(localized: "Close")) {
                     navigator.dismiss()
                 }
             }
+        }
+    }
+}
+
+private struct ModalBView: View {
+    @Environment(Navigator.self) var navigator
+    @State private var resultFromC: String?
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: .medium) {
+                Text(String(localized: "Modal B"))
+                    .font(.largeTitle.bold())
+
+                if let resultFromC {
+                    Text(String(localized: "Received from C: \(resultFromC)"))
+                        .foregroundStyle(.green)
+                        .font(.headline)
+                }
+
+                Button(String(localized: "Present Modal C")) {
+                    navigator.presentModal(PreviewRoute.modalC) { result in
+                        if let value = result as? String {
+                            resultFromC = value
+                        }
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(String(localized: "Dismiss with Result")) {
+                    navigator.dismissModal(returning: resultFromC ?? "From B (no C result)")
+                }
+                .buttonStyle(.bordered)
+
+                Button(String(localized: "Dismiss without Result")) {
+                    navigator.dismissModal()
+                }
+                .foregroundStyle(.secondary)
+            }
+            .navigationTitle(String(localized: "Modal B"))
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+private struct ModalCView: View {
+    @Environment(Navigator.self) var navigator
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: .medium) {
+                Text(String(localized: "Modal C"))
+                    .font(.largeTitle.bold())
+
+                Text(String(localized: "Deepest modal in the stack"))
+                    .foregroundStyle(.secondary)
+
+                Button(String(localized: "Dismiss with Result")) {
+                    navigator.dismissModal(returning: "Hello from C")
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(String(localized: "Dismiss without Result")) {
+                    navigator.dismissModal()
+                }
+                .foregroundStyle(.secondary)
+            }
+            .navigationTitle(String(localized: "Modal C"))
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
@@ -166,9 +250,13 @@ private struct PreviewFactory: ViewFactoryType {
                 SettingsFlow()
             case .profile:
                 ProfileFlow()
+            case .modalB:
+                ModalBView()
+            case .modalC:
+                ModalCView()
             }
         } else {
-            Text("Unknown Route")
+            Text(String(localized: "Unknown Route"))
         }
     }
 }

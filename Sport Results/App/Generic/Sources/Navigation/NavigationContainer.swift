@@ -26,8 +26,14 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
                     factory.makeView(for: destination)
                 }
         }
-        .sheet(item: $navigator.presentedModal) { destination in
-            factory.makeView(for: destination)
+        .sheet(item: firstModalBinding) {
+            navigator.handleModalDismiss(at: 0)
+        } content: { modal in
+            ModalStackView(
+                navigator: navigator,
+                factory: factory,
+                modalIndex: 0
+            )
         }
         .fullScreenCover(item: $navigator.presentedFullScreen) { destination in
             factory.makeView(for: destination)
@@ -38,5 +44,16 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
                 dismissAction()
             }
         }
+    }
+
+    private var firstModalBinding: Binding<ModalDestination?> {
+        Binding(
+            get: { navigator.presentedModals.first },
+            set: { newValue in
+                if newValue == nil, !navigator.presentedModals.isEmpty {
+                    navigator.handleModalDismiss(at: 0)
+                }
+            }
+        )
     }
 }
