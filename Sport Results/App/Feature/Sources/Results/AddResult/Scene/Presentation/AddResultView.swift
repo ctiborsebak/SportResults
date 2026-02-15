@@ -10,25 +10,25 @@ struct AddResultView: View {
     @State var viewModel: AddResultViewModel
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: .large) {
-                GeneralSectionView(inputState: $viewModel.inputState)
+        VStack(spacing: .small) {
+            closeButton
+                .padding(.horizontal, .medium)
 
-                MatchSectionView(inputState: $viewModel.inputState)
+            ScrollView {
+                VStack(spacing: .large) {
+                    GeneralSectionView(inputState: $viewModel.inputState)
 
-                saveButton
+                    MatchSectionView(inputState: $viewModel.inputState)
+
+                    saveButton
+                }
+                .padding(.horizontal, .medium)
             }
-            .padding(.horizontal, .medium)
         }
         .foregroundStyle(Color.Text.primary)
         .tint(viewModel.inputState.persistenceKind.textColor)
         .padding(.vertical, .medium)
         .hideKeyboardOnTap()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                closeButton
-            }
-        }
     }
 
     private var saveButton: some View {
@@ -42,11 +42,16 @@ struct AddResultView: View {
     }
 
     private var closeButton: some View {
-        Button {
-            navigator?.dismiss()
-        } label: {
-            "key_close".text
-        }
+        AppButton(
+            onClickAction: {
+                // TODO: Should display an alert so that the user MUST confirm match result discard
+                navigator?.dismissModal()
+            },
+            icon: Image(systemName: "xmark"),
+            caption: "key_discard".localized
+        )
+        .tint(.Semantic.error)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

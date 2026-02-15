@@ -27,6 +27,7 @@ let package = Package(
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "FactoryKit", package: "Factory"),
                 .product(name: "Localizations", package: "Localizations"),
+                .product(name: "ModalResult", package: "Generic"),
                 .product(name: "ModelConverter", package: "Generic"),
                 .product(name: "Navigation", package: "Generic"),
                 .product(name: "Theme", package: "Theme"),

@@ -1,13 +1,37 @@
+import ModalResult
 import Navigation
 import SwiftUI
 
 public struct ResultsViewFactory: ViewFactoryType {
+
     public func makeView(for destination: AnyHashable) -> some View {
-        if let route = destination as? ResultsRoute {
-            switch route {
-            case .addResult:
-                AddResultComposer().make()
-            }
+        switch destination as Any {
+
+        case let route as ResultsRoute:
+            handleResultsRoute(route)
+
+        case let route as AddResultRoute:
+            handleAddResultRoute(route)
+
+        default:
+            EmptyView()
+        }
+    }
+}
+
+@MainActor
+private extension ResultsViewFactory {
+    func handleResultsRoute(_ route: ResultsRoute) -> some View {
+        switch route {
+        case .addResult:
+            AddResultComposer().make()
+        }
+    }
+
+    func handleAddResultRoute(_ route: AddResultRoute) -> some View {
+        switch route {
+        case .result(let input):
+            ModalResultComposer().make(input: input)
         }
     }
 }

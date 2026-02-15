@@ -15,11 +15,17 @@ let package = Package(
             targets: ["ModelConverter"]
         ),
         .library(
+            name: "ModalResult",
+            targets: ["ModalResult"]
+        ),
+        .library(
             name: "Navigation",
             targets: ["Navigation"]
         )
     ],
     dependencies: [
+        .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "2.5.3")),
+        .package(path: "../Localizations"),
         .package(path: "../Theme")
     ],
     targets: [
@@ -40,8 +46,22 @@ let package = Package(
             path: "Tests/ModelConverter"
         ),
         .target(
+            name: "ModalResult",
+            dependencies: [
+                "Navigation",
+                .product(name: "Localizations", package: "Localizations"),
+                .product(name: "Theme", package: "Theme")
+            ]
+        ),
+        .testTarget(
+            name: "ModalResultTests",
+            dependencies: ["ModalResult"],
+            path: "Tests/ModalResult"
+        ),
+        .target(
             name: "Navigation",
             dependencies: [
+                .product(name: "FactoryKit", package: "Factory"),
                 .product(name: "Theme", package: "Theme")
             ]
         ),
@@ -52,4 +72,4 @@ let package = Package(
         )
     ]
 )
- 
+

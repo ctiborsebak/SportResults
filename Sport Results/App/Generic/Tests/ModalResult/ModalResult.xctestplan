@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "427EF714-7DE4-4C4D-915C-FB5028091D31",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ModalResultTests",
+        "name" : "ModalResultTests"
+      }
+    }
+  ],
+  "version" : 1
+}
