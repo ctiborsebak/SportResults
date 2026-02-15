@@ -22,8 +22,22 @@
     {
       "target" : {
         "containerPath" : "container:App\/Generic",
+        "identifier" : "ModelConverterTests",
+        "name" : "ModelConverterTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Generic",
         "identifier" : "ArchitectureTests",
         "name" : "ArchitectureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Generic",
+        "identifier" : "NavigationTests",
+        "name" : "NavigationTests"
       }
     }
   ],

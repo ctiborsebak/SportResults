@@ -6,7 +6,7 @@ public struct Card<Content: View>: View {
     private let content: Content
 
     public init(
-        accentColor: Color,
+        accentColor: Color = .Accent.neutral,
         @ViewBuilder content: () -> Content
     ) {
         self.accentColor = accentColor
