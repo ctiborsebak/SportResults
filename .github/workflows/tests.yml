@@ -17,5 +17,5 @@ jobs:
           -project "Sport Results/Sport Results.xcodeproj" \
           -scheme "Sport Results" \
           -testPlan "AllTests" \
-          -destination "platform=iOS Simulator,OS=latest" \
+          -destination "platform=iOS Simulator,name=iPhone 16,OS=18.6 \
           -parallel-testing-enabled YES
