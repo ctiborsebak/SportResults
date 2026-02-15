@@ -1,5 +1,5 @@
 import SwiftUI
-import Observation
+import Theme
 
 private enum PreviewRoute: Hashable {
     case list
@@ -53,7 +53,7 @@ private struct DetailView: View {
     @Environment(Navigator.self) var navigator
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: .small) {
             Text("Detail for ID: \(id)")
                 .font(.title)
 
@@ -128,7 +128,7 @@ private struct ProfileRootView: View {
     var body: some View {
         ZStack {
             Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
-            VStack(spacing: 20) {
+            VStack(spacing: .small) {
                 Text("Profile Flow (Full Screen)")
                     .font(.title)
 
@@ -154,8 +154,7 @@ private struct ProfileRootView: View {
     }
 }
 
-private struct PreviewFactory: @MainActor ViewFactoryType {
-    @MainActor @ViewBuilder
+private struct PreviewFactory: ViewFactoryType {
     func makeView(for destination: AnyHashable) -> some View {
         if let route = destination as? PreviewRoute {
             switch route {

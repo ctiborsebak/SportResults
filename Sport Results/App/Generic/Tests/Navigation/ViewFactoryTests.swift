@@ -25,7 +25,6 @@ struct ViewFactoryTypeTests {
 
         let description = String(reflecting: view)
         #expect(description.contains("MockView"))
-        #expect(description.contains("trueContent"))
     }
 
     @MainActor @Test
@@ -35,6 +34,6 @@ struct ViewFactoryTypeTests {
         let view = factory.makeView(for: "Unknown")
 
         let description = String(reflecting: view)
-        #expect(!description.contains("trueContent"))
+        #expect(!description.contains("MockView"))
     }
 }

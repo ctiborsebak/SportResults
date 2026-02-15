@@ -10,16 +10,15 @@ struct AddResultView: View {
     @State var viewModel: AddResultViewModel
 
     var body: some View {
-        VStack(spacing: .small) {
-            inputsScrollView
+        ScrollView {
+            VStack(spacing: .large) {
+                GeneralSectionView(inputState: $viewModel.inputState)
 
-            AppButton(
-                onClickAction: {
-                    // TODO: ViewModel.save
-                },
-                icon: viewModel.inputState.persistenceKind.icon,
-                caption: "key_save".localized,
-            )
+                MatchSectionView(inputState: $viewModel.inputState)
+
+                saveButton
+            }
+            .padding(.horizontal, .medium)
         }
         .foregroundStyle(Color.Text.primary)
         .tint(viewModel.inputState.persistenceKind.textColor)
@@ -32,15 +31,14 @@ struct AddResultView: View {
         }
     }
 
-    private var inputsScrollView: some View {
-        ScrollView {
-            VStack(spacing: .large) {
-                GeneralSectionView(inputState: $viewModel.inputState)
-
-                MatchSectionView(inputState: $viewModel.inputState)
-            }
-            .padding(.horizontal, .medium)
-        }
+    private var saveButton: some View {
+        AppButton(
+            onClickAction: {
+                // TODO: ViewModel.save
+            },
+            icon: viewModel.inputState.persistenceKind.icon,
+            caption: "key_save".localized,
+        )
     }
 
     private var closeButton: some View {

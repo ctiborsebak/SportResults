@@ -19,6 +19,9 @@ let package = Package(
             targets: ["Navigation"]
         )
     ],
+    dependencies: [
+        .package(path: "../Theme")
+    ],
     targets: [
         .target(
             name: "Architecture",
@@ -38,6 +41,9 @@ let package = Package(
         ),
         .target(
             name: "Navigation",
+            dependencies: [
+                .product(name: "Theme", package: "Theme")
+            ]
         ),
         .testTarget(
             name: "NavigationTests",
