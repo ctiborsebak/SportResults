@@ -14,7 +14,28 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:",
+        "containerPath" : "container:App\/Generic",
+        "identifier" : "ModelConverterTests",
+        "name" : "ModelConverterTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Generic",
+        "identifier" : "PersistenceTests",
+        "name" : "PersistenceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Feature",
+        "identifier" : "ResultsTests",
+        "name" : "ResultsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:App\/Generic",
         "identifier" : "ModalResultTests",
         "name" : "ModalResultTests"
       }
@@ -28,23 +49,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:App\/Feature",
-        "identifier" : "ResultsTests",
-        "name" : "ResultsTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:App\/Generic",
         "identifier" : "ArchitectureTests",
         "name" : "ArchitectureTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:App\/Generic",
-        "identifier" : "ModelConverterTests",
-        "name" : "ModelConverterTests"
       }
     }
   ],

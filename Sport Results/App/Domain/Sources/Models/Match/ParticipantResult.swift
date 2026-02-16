@@ -1,4 +1,4 @@
-public struct ParticipantResult {
+public struct ParticipantResult: Sendable {
     public let name: String
     public let score: Int
 

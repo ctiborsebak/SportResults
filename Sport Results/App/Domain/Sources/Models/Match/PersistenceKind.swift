@@ -1,4 +1,4 @@
-public enum PersistenceKind: CaseIterable, Identifiable {
+public enum PersistenceKind: CaseIterable, Identifiable, Sendable {
     case local
     case remote
 

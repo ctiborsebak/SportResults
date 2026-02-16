@@ -12,12 +12,14 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(path: "../Domain"),
         .package(path: "../Localizations")
     ],
     targets: [
         .target(
             name: "Theme",
             dependencies: [
+                .product(name: "Domain", package: "Domain"),
                 .product(name: "Localizations", package: "Localizations")
             ],
             path: "Sources"

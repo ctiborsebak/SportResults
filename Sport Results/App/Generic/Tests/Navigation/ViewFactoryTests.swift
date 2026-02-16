@@ -4,19 +4,6 @@ import SwiftUI
 
 struct ViewFactoryTypeTests {
 
-    struct MockView: View {
-        var body: some View { Text("Mock") }
-    }
-
-    struct MockFactory: ViewFactoryType {
-        @ViewBuilder
-        func makeView(for destination: AnyHashable) -> some View {
-            if destination as? String == "Mock" {
-                MockView()
-            }
-        }
-    }
-
     @MainActor @Test
     func factory_should_resolve_view_for_known_destination() {
         let factory = MockFactory()
@@ -35,5 +22,20 @@ struct ViewFactoryTypeTests {
 
         let description = String(reflecting: view)
         #expect(!description.contains("MockView"))
+    }
+}
+
+// MARK: - Helpers & Factories
+
+struct MockView: View {
+    var body: some View { Text("Mock") }
+}
+
+struct MockFactory: ViewFactoryType {
+    @ViewBuilder
+    func makeView(for destination: AnyHashable) -> some View {
+        if destination as? String == "Mock" {
+            MockView()
+        }
     }
 }
