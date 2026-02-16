@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "52CD0139-B0A8-4099-B2D7-D56D46758EB4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PersistenceTests",
+        "name" : "PersistenceTests"
+      }
+    }
+  ],
+  "version" : 1
+}

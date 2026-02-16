@@ -22,6 +22,7 @@ struct AddResultView: View {
 
                     saveButton
                 }
+                .padding(.top, .medium)
                 .padding(.horizontal, .medium)
             }
         }

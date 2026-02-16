@@ -1,7 +1,7 @@
 import Foundation
 
-public struct MatchResult: Identifiable {
-    public let id = UUID()
+public struct MatchResult: Identifiable, Sendable {
+    public let id: UUID
 
     public let discipline: Discipline
     public let name: String
@@ -13,6 +13,7 @@ public struct MatchResult: Identifiable {
     public let away: ParticipantResult
 
     public init(
+        id: UUID = UUID(),
         discipline: Discipline,
         name: String,
         location: String,
@@ -22,6 +23,7 @@ public struct MatchResult: Identifiable {
         home: ParticipantResult,
         away: ParticipantResult
     ) {
+        self.id = id
         self.discipline = discipline
         self.name = name
         self.location = location

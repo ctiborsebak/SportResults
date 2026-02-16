@@ -21,10 +21,15 @@ let package = Package(
         .library(
             name: "Navigation",
             targets: ["Navigation"]
+        ),
+        .library(
+            name: "Persistence",
+            targets: ["Persistence"]
         )
     ],
     dependencies: [
         .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "2.5.3")),
+        .package(path: "../Domain"),
         .package(path: "../Localizations"),
         .package(path: "../Theme")
     ],
@@ -48,6 +53,7 @@ let package = Package(
         .target(
             name: "ModalResult",
             dependencies: [
+                "Architecture",
                 "Navigation",
                 .product(name: "Localizations", package: "Localizations"),
                 .product(name: "Theme", package: "Theme")
@@ -69,7 +75,20 @@ let package = Package(
             name: "NavigationTests",
             dependencies: ["Navigation"],
             path: "Tests/Navigation"
-        )
+        ),
+        .target(
+            name: "Persistence",
+            dependencies: [
+                "ModelConverter",
+                .product(name: "Domain", package: "Domain"),
+                .product(name: "FactoryKit", package: "Factory")
+            ]
+        ),
+        .testTarget(
+            name: "PersistenceTests",
+            dependencies: ["Persistence"],
+            path: "Tests/Persistence"
+        ),
     ]
 )
 
