@@ -1,4 +1,4 @@
-public enum Discipline: CaseIterable, Identifiable, Sendable {
+public enum Discipline: CaseIterable, Equatable, Identifiable, Sendable {
     case basketball
     case soccer
     case tennis

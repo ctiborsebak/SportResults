@@ -3,6 +3,7 @@ import FactoryKit
 import Foundation
 import SwiftData
 
+// NOTE: We are not using @ModelActor macro, because at the time being, its pretty much impossible to inject dependencies into it for a proper Dependency Injection setup / Dependency Inversion principle adherence
 public actor MatchResultsLocalService: DataServiceType {
 
     private let container: ModelContainer

@@ -97,19 +97,3 @@ private func makeService() throws -> MatchResultsLocalService {
         converter: converter
     )
 }
-
-private extension MatchResult {
-    static func mock(id: UUID = UUID()) -> Self {
-        .init(
-            id: id,
-            discipline: .basketball,
-            name: "",
-            location: "",
-            date: .distantPast,
-            duration: .zero,
-            persistenceKind: .local,
-            home: .init(name: "", score: 0),
-            away: .init(name: "", score: 0)
-        )
-    }
-}

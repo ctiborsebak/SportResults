@@ -1,7 +1,7 @@
 import Domain
 import FactoryKit
 
-extension Container {
+public extension Container {
 
     // MARK: - Converters
 
@@ -41,7 +41,7 @@ extension Container {
 
     // MARK: - Repositories
 
-    var matchResultsLocalRepository: Factory<MatchResultsRepositoryType> {
+    var matchResultsRepository: Factory<MatchResultsRepositoryType> {
         self {
             MatchResultsRepository(
                 localStorageService: self.localResultsService(),
