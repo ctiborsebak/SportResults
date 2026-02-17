@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8FD248AB2F3E21A10051D42F /* Results in Frameworks */ = {isa = PBXBuildFile; productRef = 8FD248AA2F3E21A10051D42F /* Results */; };
+		8FE9C1AE2F448FA1008FC146 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8FE9C1AD2F448FA1008FC146 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FD248AB2F3E21A10051D42F /* Results in Frameworks */,
+				8FE9C1AE2F448FA1008FC146 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +98,7 @@
 			name = "Sport Results";
 			packageProductDependencies = (
 				8FD248AA2F3E21A10051D42F /* Results */,
+				8FE9C1AD2F448FA1008FC146 /* FirebaseFirestore */,
 			);
 			productName = "Sport Results";
 			productReference = 8F72FBA92F3DCE5300E1B6EC /* Sport Results.app */;
@@ -127,6 +130,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				8FD248AC2F3E21A10051D42F /* XCLocalSwiftPackageReference "App/Feature" */,
+				8FE9C1AC2F448FA1008FC146 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8F72FBAA2F3DCE5300E1B6EC /* Products */;
@@ -287,7 +291,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AER56P3865;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Sport Results";
@@ -322,7 +326,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AER56P3865;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Sport Results";
@@ -380,11 +384,27 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		8FE9C1AC2F448FA1008FC146 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		8FD248AA2F3E21A10051D42F /* Results */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8FD248AC2F3E21A10051D42F /* XCLocalSwiftPackageReference "App/Feature" */;
 			productName = Results;
+		};
+		8FE9C1AD2F448FA1008FC146 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FE9C1AC2F448FA1008FC146 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

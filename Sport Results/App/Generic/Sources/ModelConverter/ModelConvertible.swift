@@ -6,11 +6,11 @@ public protocol Convertible {
 }
 
 public protocol DomainConvertible: Convertible {
-    func toDomain(_ external: ExternalModel) -> DomainModel
+    func toDomain(_ external: ExternalModel) throws -> DomainModel
 }
 
 public protocol ExternalConvertible: Convertible {
-    func toExternal(_ domain: DomainModel) -> ExternalModel
+    func toExternal(_ domain: DomainModel) throws -> ExternalModel
 }
 
 public typealias ModelConvertible = DomainConvertible & ExternalConvertible

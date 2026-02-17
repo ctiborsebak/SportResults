@@ -29,6 +29,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "2.5.3")),
+        .package(url: "ttps://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "12.9.0")),
         .package(path: "../Domain"),
         .package(path: "../Localizations"),
         .package(path: "../Theme")
@@ -81,7 +82,8 @@ let package = Package(
             dependencies: [
                 "ModelConverter",
                 .product(name: "Domain", package: "Domain"),
-                .product(name: "FactoryKit", package: "Factory")
+                .product(name: "FactoryKit", package: "Factory"),
+                .product(name: "FirebaseFirestore", package: "firebase-ios-sdk")
             ]
         ),
         .testTarget(
