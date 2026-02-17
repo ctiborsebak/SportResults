@@ -63,7 +63,7 @@ public final class MatchResultsRepository: MatchResultsRepositoryType {
 }
 
 // NOTE: Errors should be more specific and propagated trough different layers (such as service can have a networking error, converter a conversion error etc.), these underlying errors then become much more traceable and "debuggable".
-// Or they can be more generic such as AppError, RepositoryError etc, and these domain errors can be tied to specific captions / icons, etc.
+// They can also be more generic such as AppError, RepositoryError etc, and these domain errors can be tied to specific captions / icons, etc.
 enum MatchResultsRepositoryError: Error {
   case local(underlyingError: Error)
   case remote(underlyingError: Error)

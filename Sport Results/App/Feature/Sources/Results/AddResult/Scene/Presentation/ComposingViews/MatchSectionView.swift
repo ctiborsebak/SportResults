@@ -2,7 +2,6 @@ import Domain
 import SwiftUI
 import Theme
 
-
 struct MatchSectionView: View {
     @Binding var inputState: AddResultInputState
 
@@ -60,6 +59,7 @@ struct MatchSectionView: View {
                     ForEach(0..<60) { Text("\($0) s").tag($0) }
                 }
             }
+            .frame(height: .xxlarge)
             .pickerStyle(.wheel)
         }
     }
