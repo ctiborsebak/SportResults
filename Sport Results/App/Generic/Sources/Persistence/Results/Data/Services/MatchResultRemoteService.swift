@@ -2,9 +2,11 @@ import Domain
 import FirebaseFirestore
 import Foundation
 
+// NOTE: While MatchResultsLocalService gains a tangible benefit from being an `actor` (in the form of isolated ModelContainer), this remote service doesnt really benefit from it. But in my opinion its a good practice (no harm done) and easily expandable with a cache of the last result, for example. Once it evolves from stateless to stateful the actor starts bringing out its advantages.
 public actor MatchResultsRemoteService: DataServiceType {
     private let converter: MatchResultRemoteDtoConverter
 
+    // NOTE: It would be much better if every user had their own collection, preferably trough Firebase Auth. For demonstration purposes a shared collection will do.
     private let collectionName = "match_results"
     private let db = Firestore.firestore()
 

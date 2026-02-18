@@ -21,10 +21,14 @@ public struct ResultsViewFactory: ViewFactoryType {
 
 @MainActor
 private extension ResultsViewFactory {
+    @ViewBuilder
     func handleResultsRoute(_ route: ResultsRoute) -> some View {
         switch route {
         case .addResult:
             AddResultComposer().make()
+
+        case .result(let input):
+            ModalResultComposer().make(input: input)
         }
     }
 

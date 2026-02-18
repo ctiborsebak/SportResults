@@ -37,19 +37,15 @@ private struct HomeView: View {
 
             Section(String(localized: "Stacked Modals Demo")) {
                 Button(String(localized: "Present Modal A → B → C")) {
-                    navigator.presentModal(PreviewRoute.modalB) { result in
-                        if let value = result as? String {
-                            lastResult = value
-                        } else {
-                            lastResult = String(localized: "Dismissed without result")
-                        }
+                    navigator.presentModalWithResult(PreviewRoute.modalB) { (result: String?) in
+                        lastResult = result
                     }
                 }
+            }
 
-                if let lastResult {
-                    Text(String(localized: "Result from modal chain: \(lastResult)"))
-                        .foregroundStyle(.secondary)
-                }
+            if let lastResult {
+                Text(String(localized: "Result from modal chain: \(lastResult)"))
+                    .foregroundStyle(.secondary)
             }
         }
         .navigationTitle(String(localized: "Home"))
@@ -186,10 +182,8 @@ private struct ModalBView: View {
                 }
 
                 Button(String(localized: "Present Modal C")) {
-                    navigator.presentModal(PreviewRoute.modalC) { result in
-                        if let value = result as? String {
-                            resultFromC = value
-                        }
+                    navigator.presentModalWithResult(PreviewRoute.modalC) { (result: String?) in
+                        resultFromC = result
                     }
                 }
                 .buttonStyle(.borderedProminent)

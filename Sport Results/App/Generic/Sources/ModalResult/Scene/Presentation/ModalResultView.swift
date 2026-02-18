@@ -40,7 +40,7 @@ public struct ModalResultView: View {
         case .success:
             AppButton(
                 onClickAction: {
-                    navigator?.dismissModal(returning: ModalResultKind.success)
+                    navigator?.dismissModal(returning: ModalResultAction.success)
                 },
                 caption: "key_close".localized
             )
@@ -49,7 +49,7 @@ public struct ModalResultView: View {
             HStack(spacing: .small) {
                 AppButton(
                     onClickAction: {
-                        navigator?.dismissModal(returning: ModalResultKind.retry)
+                        navigator?.dismissModal(returning: ModalResultAction.retry)
                     },
                     caption: "key_retry".localized
                 )

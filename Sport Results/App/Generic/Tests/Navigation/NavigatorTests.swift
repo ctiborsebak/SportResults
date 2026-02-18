@@ -85,7 +85,7 @@ struct NavigatorTests {
         let navigator = Navigator()
         var dismissed = false
 
-        navigator.presentModal("Settings") { _ in
+        navigator.presentModal("Settings") {
             dismissed = true
         }
 
@@ -97,33 +97,16 @@ struct NavigatorTests {
     @Test
     func navigator_should_pass_result_to_ondismiss() {
         let navigator = Navigator()
-        var receivedResult: Any?
+        var receivedResult: String?
 
-        navigator.presentModal("Editor") { result in
+        navigator.presentModalWithResult("Editor") { (result: String?) in
             receivedResult = result
         }
 
         navigator.dismissModal(returning: "SavedValue")
 
-        let stringResult = receivedResult as? String
+        let stringResult = receivedResult
         #expect(stringResult == "SavedValue")
-    }
-
-    @Test
-    func navigator_should_pass_nil_result_when_dismissing_without_result() {
-        let navigator = Navigator()
-        var closureCalled = false
-        var receivedResult: Any? = "sentinel"
-
-        navigator.presentModal("Editor") { result in
-            closureCalled = true
-            receivedResult = result
-        }
-
-        navigator.dismissModal()
-
-        #expect(closureCalled)
-        #expect(receivedResult == nil)
     }
 
     @Test

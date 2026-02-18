@@ -1,5 +1,6 @@
 import Domain
 import Localizations
+import ModalResult
 import Navigation
 import SwiftUI
 import Theme
@@ -29,16 +30,25 @@ struct AddResultView: View {
         .foregroundStyle(Color.Text.primary)
         .tint(viewModel.inputState.persistenceKind.textColor)
         .padding(.vertical, .medium)
+        .disabled(viewModel.isLoading)
         .hideKeyboardOnTap()
+        .onChange(of: viewModel.saveModalResult) { _, newResult in
+            handleSaveResultModal(newResult)
+        }
     }
+}
 
+private extension AddResultView {
     private var saveButton: some View {
         AppButton(
             onClickAction: {
-                // TODO: ViewModel.save
+                Task {
+                    await viewModel.save()
+                }
             },
             icon: viewModel.inputState.persistenceKind.icon,
             caption: "key_save".localized,
+            isLoading: viewModel.isLoading
         )
     }
 
@@ -54,10 +64,38 @@ struct AddResultView: View {
         .tint(.Semantic.error)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+
+    private func handleSaveResultModal(_ input: ModalResultInput?) {
+        guard let resultInput = input else { return }
+
+        navigator?.presentModalWithResult(
+            AddResultRoute.result(resultInput),
+            onDismiss: { (action: ModalResultAction?) in
+                viewModel.resetSaveModal()
+
+                switch action {
+
+                case .success:
+                    navigator?.dismissModal(returning: AddResultAction.success)
+                case .retry:
+                    Task {
+                        // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation, else there can be unexpected behavior.
+                        try await Task.sleep(for: .seconds(.animationDelay))
+                        await viewModel.save()
+                    }
+
+                default:
+                    break
+                }
+            }
+        )
+    }
 }
 
 #Preview("AddResultsView") {
     AddResultView(
-        viewModel: AddResultViewModel()
+        viewModel: AddResultViewModel(
+            saveResultUseCase: PreviewSaveResultUseCase()
+        )
     )
 }

@@ -30,6 +30,7 @@ let package = Package(
                 .product(name: "ModalResult", package: "Generic"),
                 .product(name: "ModelConverter", package: "Generic"),
                 .product(name: "Navigation", package: "Generic"),
+                .product(name: "Persistence", package: "Generic"),
                 .product(name: "Theme", package: "Theme"),
             ]
         ),

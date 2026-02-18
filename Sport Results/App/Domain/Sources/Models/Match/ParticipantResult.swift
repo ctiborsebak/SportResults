@@ -1,4 +1,4 @@
-public struct ParticipantResult: Sendable {
+public struct ParticipantResult: Equatable, Sendable {
     public let name: String
     public let score: Int
 

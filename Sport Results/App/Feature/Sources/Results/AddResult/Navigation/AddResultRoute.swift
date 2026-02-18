@@ -1,5 +1,5 @@
 import ModalResult
 
-enum AddResultRoute {
+enum AddResultRoute: Hashable {
     case result(ModalResultInput)
 }

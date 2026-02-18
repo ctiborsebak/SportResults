@@ -1,6 +1,6 @@
 import Foundation
 
-public struct MatchResult: Identifiable, Sendable {
+public struct MatchResult: Equatable, Identifiable, Sendable {
     public let id: UUID
 
     public let discipline: Discipline

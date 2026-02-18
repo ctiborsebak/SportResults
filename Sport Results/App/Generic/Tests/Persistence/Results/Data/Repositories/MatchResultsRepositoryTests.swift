@@ -11,7 +11,7 @@ struct MatchResultsRepositoryTests {
         let remoteMock = MockDataService()
         let repository = makeRepository(local: localMock, remote: remoteMock)
 
-        let item = MatchResult.mock(id: UUID(), kind: .local)
+        let item = MatchResult.mock(id: UUID(), persistenceKind: .local)
 
         try await repository.save(item)
 
@@ -28,7 +28,7 @@ struct MatchResultsRepositoryTests {
         let remoteMock = MockDataService()
         let repository = makeRepository(local: localMock, remote: remoteMock)
 
-        let item = MatchResult.mock(id: UUID(), kind: .remote)
+        let item = MatchResult.mock(id: UUID(), persistenceKind: .remote)
 
         try await repository.save(item)
 
@@ -48,7 +48,7 @@ struct MatchResultsRepositoryTests {
 
         try await confirmation { confirm in
             do {
-                try await repository.save(.mock(kind: .local))
+                try await repository.save(.mock(persistenceKind: .local))
             } catch MatchResultsRepositoryError.local(let underlying) {
                 #expect(underlying as? TestError == expectedError)
                 confirm()
@@ -61,7 +61,7 @@ struct MatchResultsRepositoryTests {
         let remoteMock = MockDataService()
         let repository = makeRepository(remote: remoteMock)
 
-        let item = MatchResult.mock(id: UUID(), kind: .remote)
+        let item = MatchResult.mock(id: UUID(), persistenceKind: .remote)
 
         try await repository.delete(item)
 
@@ -75,7 +75,7 @@ struct MatchResultsRepositoryTests {
         let remoteMock = MockDataService()
         let repository = makeRepository(local: localMock, remote: remoteMock)
 
-        let localItem = MatchResult.mock(kind: .local)
+        let localItem = MatchResult.mock(persistenceKind: .local)
         await localMock.set(results: [localItem])
 
         let results = try await repository.fetch([.local])
@@ -93,8 +93,8 @@ struct MatchResultsRepositoryTests {
         let remoteMock = MockDataService()
         let repository = makeRepository(local: localMock, remote: remoteMock)
 
-        let item1 = MatchResult.mock(id: UUID(), kind: .local)
-        let item2 = MatchResult.mock(id: UUID(), kind: .remote)
+        let item1 = MatchResult.mock(id: UUID(), persistenceKind: .local)
+        let item2 = MatchResult.mock(id: UUID(), persistenceKind: .remote)
 
         await localMock.set(results: [item1])
         await remoteMock.set(results: [item2])
@@ -155,21 +155,5 @@ actor MockDataService: DataServiceType {
         if let error = errorToThrow { throw error }
         fetchCallCount += 1
         return resultsToReturn
-    }
-}
-
-private extension MatchResult {
-    static func mock(id: UUID = UUID(), kind: PersistenceKind = .local) -> Self {
-        .init(
-            id: id,
-            discipline: .soccer,
-            name: "Mock Match",
-            location: "Mock Location",
-            date: Date(),
-            duration: .seconds(60),
-            persistenceKind: kind,
-            home: ParticipantResult(name: "Home", score: 0),
-            away: ParticipantResult(name: "Away", score: 0)
-        )
     }
 }

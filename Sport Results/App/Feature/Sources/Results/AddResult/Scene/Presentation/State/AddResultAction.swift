@@ -1,0 +1,3 @@
+enum AddResultAction {
+    case success
+}
