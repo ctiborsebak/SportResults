@@ -12,7 +12,7 @@ struct FetchResultsUseCaseTests {
 
         _ = try await useCase.fetch(.all)
 
-        #expect(repository.kindsPassed == [.local, .remote])
+        #expect(await repository.kindsPassed == [.local, .remote])
     }
 
     @Test
@@ -22,7 +22,7 @@ struct FetchResultsUseCaseTests {
 
         _ = try await useCase.fetch(.local)
 
-        #expect(repository.kindsPassed == [.local])
+        #expect(await repository.kindsPassed == [.local])
     }
 
     @Test
@@ -32,7 +32,7 @@ struct FetchResultsUseCaseTests {
 
         _ = try await useCase.fetch(.remote)
 
-        #expect(repository.kindsPassed == [.remote])
+        #expect(await repository.kindsPassed == [.remote])
     }
 }
 
@@ -42,7 +42,7 @@ private func mockRepository() -> MockMatchResultsRepository {
     .init()
 }
 
-private class MockMatchResultsRepository: MatchResultsRepositoryType {
+private final actor MockMatchResultsRepository: MatchResultsRepositoryType {
     var kindsPassed: Set<PersistenceKind> = []
 
     func fetch(_ kinds: Set<PersistenceKind>) async throws -> [MatchResult] {

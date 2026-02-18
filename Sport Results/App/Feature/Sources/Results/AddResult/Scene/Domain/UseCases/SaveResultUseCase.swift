@@ -1,7 +1,7 @@
 import Domain
 import Persistence
 
-protocol SaveResultUseCaseType {
+protocol SaveResultUseCaseType: Sendable {
     func save(_ result: MatchResult) async throws
 }
 
@@ -17,3 +17,9 @@ final class SaveResultUseCase: SaveResultUseCaseType {
         try await repository.save(result)
     }
 }
+
+#if DEBUG
+final class PreviewSaveResultUseCase: SaveResultUseCaseType {
+    func save(_ result: MatchResult) async throws { }
+}
+#endif

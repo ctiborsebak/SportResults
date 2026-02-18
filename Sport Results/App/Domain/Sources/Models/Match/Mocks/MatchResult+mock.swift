@@ -1,5 +1,6 @@
 import Foundation
 
+#if DEBUG
 extension MatchResult {
     public static func mock(
         id: UUID = UUID(),
@@ -24,5 +25,5 @@ extension MatchResult {
             away: away
         )
     }
-
 }
+#endif

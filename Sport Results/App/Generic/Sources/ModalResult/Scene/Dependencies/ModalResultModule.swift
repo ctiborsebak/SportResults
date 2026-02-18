@@ -2,7 +2,7 @@ import FactoryKit
 
 extension Container {
     var modalResultViewModel: ParameterFactory<ModalResultInput, ModalResultViewModel> {
-        self { input in
+        ParameterFactory(self) { @MainActor input in
             ModalResultViewModel(input: input)
         }
     }

@@ -11,7 +11,12 @@ extension Container {
     // MARK: - View Models
 
     var resultsViewModel: Factory<ResultsViewModel> {
-        self { ResultsViewModel() }
+        Factory(self) { @MainActor in
+            ResultsViewModel(
+                fetchResultsUseCase: self.fetchResultsUseCase(),
+                deleteResultUseCase: self.deleteResultsUseCase()
+            )
+        }
     }
 
     // MARK: - Use Cases

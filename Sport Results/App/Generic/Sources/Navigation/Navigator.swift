@@ -34,10 +34,25 @@ public final class Navigator {
 
     public func presentModal(
         _ destination: AnyHashable,
-        onDismiss: ((Any?) -> Void)? = nil
+        onDismiss: (() -> Void)? = nil
     ) {
         presentedModals.append(
-            ModalDestination(destination: destination, onDismiss: onDismiss)
+            ModalDestination(
+                destination: destination,
+                onDismiss: onDismiss.map { action in { _ in action() } }
+            )
+        )
+    }
+
+    public func presentModalWithResult<T>(
+        _ destination: AnyHashable,
+        onDismiss: @escaping (T?) -> Void
+    ) {
+        presentedModals.append(
+            ModalDestination(destination: destination) { anyResult in
+                let typedResult = anyResult as? T
+                onDismiss(typedResult)
+            }
         )
     }
 

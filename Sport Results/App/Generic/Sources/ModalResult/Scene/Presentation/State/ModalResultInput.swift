@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ModalResultInput {
+public struct ModalResultInput: Equatable, Hashable {
     let caption: String
     let kind: ResultKind
 

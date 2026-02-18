@@ -14,7 +14,7 @@ struct DeleteResultUseCaseTests {
 
         _ = try await useCase.delete(result: result)
 
-        #expect(repository.matchPassed == result)
+        #expect(await repository.matchPassed == result)
     }
 }
 
@@ -24,7 +24,7 @@ private func mockRepository() -> MockMatchResultsRepository {
     .init()
 }
 
-private class MockMatchResultsRepository: MatchResultsRepositoryType {
+private final actor MockMatchResultsRepository: MatchResultsRepositoryType {
     var matchPassed: MatchResult?
 
     func delete(_ result: MatchResult) async throws {

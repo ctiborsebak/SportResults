@@ -14,7 +14,7 @@ struct SaveResultUseCaseTests {
 
         _ = try await useCase.save(result)
 
-        #expect(repository.matchPassed == result)
+        #expect(await repository.matchPassed == result)
     }
 }
 
@@ -24,7 +24,7 @@ private func mockRepository() -> MockMatchResultsRepository {
     .init()
 }
 
-private class MockMatchResultsRepository: MatchResultsRepositoryType {
+private final actor MockMatchResultsRepository: MatchResultsRepositoryType {
     var matchPassed: MatchResult?
 
     func save(_ result: MatchResult) async throws {
