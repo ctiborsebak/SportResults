@@ -171,4 +171,28 @@ struct NavigatorTests {
         #expect(navigator.path.count == 1)
         #expect(navigator.path.last == AnyHashable("Screen1"))
     }
+
+    @Test
+    func navigator_should_set_presented_alert_when_presenting() {
+        let navigator = Navigator()
+        let configuration = AlertConfiguration(title: "Test Alert")
+
+        navigator.presentAlert(configuration: configuration)
+
+        #expect(navigator.presentedAlert != nil)
+        #expect(navigator.presentedAlert?.title == "Test Alert")
+    }
+
+    @Test
+    func navigator_should_clear_presented_alert_when_dismissing() {
+        let navigator = Navigator()
+        let configuration = AlertConfiguration(title: "Test Alert")
+        navigator.presentAlert(configuration: configuration)
+
+        #expect(navigator.presentedAlert != nil)
+
+        navigator.dismissAlert()
+
+        #expect(navigator.presentedAlert == nil)
+    }
 }

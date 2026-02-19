@@ -30,7 +30,7 @@ struct ScoreView: View {
     }
 }
 
-// NOTE: This layout ensures that the ":" is always in dead center of the view -> looks better / uniformed. This workaround has a disadvantage though, the scores take up the frame of the wider of these two numbers, therefore a text around score (3000:0) will get wrapped around the frame width of "3000" on both sides, this edge case logic should be revisited.
+// NOTE: This layout ensures that the ":" is always in dead center of the view -> looks better / uniformed. This workaround has a disadvantage though, the scores take up the frame of the wider of these two numbers, therefore a text around score (3000:0) will get wrapped around the frame width of "3000" on both sides, this edge case logic should be revisited. Probably achievable trough AlignmentGuide.
 private struct ScoreLayout: Layout {
     let spacing: CGFloat
 

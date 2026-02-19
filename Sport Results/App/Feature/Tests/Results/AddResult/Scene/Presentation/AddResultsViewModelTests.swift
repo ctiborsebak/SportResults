@@ -2,16 +2,35 @@ import Domain
 import Localizations
 import Persistence
 import Testing
+import Theme
 @testable import ModalResult
 @testable import Results
 
 @MainActor
 struct AddResultViewModelTests {
 
+    // MARK: - Save Tests
+
     @Test
-    func `should_save_result_successfully`() async throws {
+    func `save_should_show_alert_when_mandatory_inputs_are_missing`() async throws {
         let useCase = mockUseCase()
         let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        await viewModel.save()
+
+        #expect(viewModel.alertConfiguration != nil)
+        #expect(viewModel.alertConfiguration?.title == "key_provide_all_fields_alert".localized)
+
+        let savedResult = await useCase.savedResult
+        #expect(savedResult == nil)
+    }
+
+    @Test
+    func `save_should_succeed_when_inputs_are_valid`() async throws {
+        let useCase = mockUseCase()
+        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        fillMandatoryInputs(for: &viewModel.inputState)
 
         await viewModel.save()
 
@@ -24,11 +43,13 @@ struct AddResultViewModelTests {
     }
 
     @Test
-    func `should_handle_save_error`() async throws {
+    func `save_should_show_error_modal`() async throws {
         let useCase = mockUseCase()
         await useCase.setError(TestError.simulated)
 
         let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        fillMandatoryInputs(for: &viewModel.inputState)
 
         await viewModel.save()
 
@@ -41,10 +62,37 @@ struct AddResultViewModelTests {
     }
 
     @Test
+    func `discard_should_dismiss_when_no_changes_made`() async throws {
+        let useCase = mockUseCase()
+        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        viewModel.discard()
+
+        try await Task.sleep(for: .seconds(.alertDismissDelay + 0.1))
+
+        #expect(viewModel.isDismissing == true)
+        #expect(viewModel.alertConfiguration == nil)
+    }
+
+    @Test
+    func `discard_should_show_alert_when_changes_made`() async throws {
+        let useCase = mockUseCase()
+        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        simulateChanges(for: &viewModel.inputState)
+
+        viewModel.discard()
+
+        #expect(viewModel.alertConfiguration?.title == "key_discard_confirm_alert".localized)
+        #expect(viewModel.isDismissing == false)
+    }
+
+    @Test
     func `should_reset_save_modal`() async throws {
         let useCase = mockUseCase()
         let viewModel = AddResultViewModel(saveResultUseCase: useCase)
 
+        fillMandatoryInputs(for: &viewModel.inputState)
         await viewModel.save()
         #expect(viewModel.saveModalResult != nil)
 
@@ -52,12 +100,37 @@ struct AddResultViewModelTests {
 
         #expect(viewModel.saveModalResult == nil)
     }
+
+    @Test
+    func `should_hide_alert`() async throws {
+        let useCase = mockUseCase()
+        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+
+        await viewModel.save()
+        #expect(viewModel.alertConfiguration != nil)
+
+        viewModel.hideAlert()
+
+        #expect(viewModel.alertConfiguration == nil)
+    }
 }
 
 // MARK: - Helpers & Factories
 
 private func mockUseCase() -> MockSaveResultUseCase {
     .init()
+}
+
+private func fillMandatoryInputs(for state: inout AddResultInputState) {
+    state.matchName = "New Name"
+    state.location = "New Location"
+    state.seconds = 1
+    state.homeParticipantName = "Home"
+    state.awayParticipantName = "Away"
+}
+
+private func simulateChanges(for state: inout AddResultInputState) {
+    state.matchName = "New Name"
 }
 
 private enum TestError: Error {

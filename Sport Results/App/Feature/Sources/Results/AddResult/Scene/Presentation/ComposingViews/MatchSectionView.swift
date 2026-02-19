@@ -29,6 +29,7 @@ struct MatchSectionView: View {
                 }
             }
         }
+        .textFieldStyle(.roundedBorder)
     }
 
     private var sectionTitle: some View {
@@ -43,6 +44,9 @@ struct MatchSectionView: View {
         HStack {
             "key_duration".localized
                 .text
+                .foregroundStyle(
+                    inputState.hasDurationChanged ? Color.Text.primary : Color.Semantic.error
+                )
 
             Spacer()
 
@@ -65,26 +69,50 @@ struct MatchSectionView: View {
     }
 
     private var homeTeamNameInputField: some View {
-        TextField("key_home".localized, text: $inputState.homeParticipantName)
+        TextField(
+            "",
+            text: $inputState.homeParticipantName,
+            prompt: Text("key_home".localized)
+                .foregroundStyle(Color.Semantic.error)
+        )
     }
 
     private var awayTeamNameInputField: some View {
-        TextField("key_away".localized, text: $inputState.awayParticipantName)
-            .multilineTextAlignment(.trailing)
+        TextField(
+            "",
+            text: $inputState.awayParticipantName,
+            prompt: Text("key_away".localized)
+                .foregroundStyle(Color.Semantic.error)
+        )
+        .multilineTextAlignment(.trailing)
     }
 
     private var scoreInputFields: some View {
         HStack {
             TextField("key_score".localized, value: $inputState.homeParticipantScore, format: .number)
+                .onChange(of: inputState.homeParticipantScore) { _, newScore in
+                    enforceThreeDigitLimit(for: &inputState.homeParticipantScore, newValue: newScore)
+                }
 
             Spacer()
 
             TextField("key_score".localized, value: $inputState.awayParticipantScore, format: .number)
+                .onChange(of: inputState.homeParticipantScore) { _, newScore in
+                    enforceThreeDigitLimit(for: &inputState.homeParticipantScore, newValue: newScore)
+                }
                 .multilineTextAlignment(.trailing)
         }
         .font(.largeTitle)
         .fontWeight(.bold)
         .keyboardType(.numberPad)
+    }
+
+    private func enforceThreeDigitLimit(for score: inout Int, newValue: Int) {
+        let stringValue = String(newValue)
+
+        if stringValue.count > 3 {
+            score = Int(String(stringValue.prefix(3))) ?? 0
+        }
     }
 }
 

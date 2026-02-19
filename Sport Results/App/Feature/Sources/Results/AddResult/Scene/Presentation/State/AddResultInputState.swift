@@ -14,4 +14,26 @@ struct AddResultInputState {
     var homeParticipantScore: Int = 0
     var awayParticipantName: String = ""
     var awayParticipantScore: Int = 0
+
+    var hasDurationChanged: Bool {
+        !(hours == 0 && minutes == 0 && seconds == 0)
+    }
+
+    var didChange: Bool {
+        let unchangedInput = AddResultInputState()
+
+        return matchName != unchangedInput.matchName
+        || location != unchangedInput.location
+        || hasDurationChanged
+        || homeParticipantName != unchangedInput.homeParticipantName
+        || awayParticipantName != unchangedInput.awayParticipantName
+    }
+
+    var areMandatoryInputsFilled: Bool {
+        !matchName.isEmpty
+        && !location.isEmpty
+        && hasDurationChanged
+        && !homeParticipantName.isEmpty
+        && !awayParticipantName.isEmpty
+    }
 }
