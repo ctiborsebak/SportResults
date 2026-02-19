@@ -16,4 +16,4 @@ A simple application that leverages Swift Data and Firebase Firestore to display
 - Items are deleted by List's native swipe gesture. This might not be communicated clearly to the user, so an explicit delete button would be more user-friendly.
 
 ## Miscleanious
-For more thought process and inmprovements see `// TODO:` and `// NOTE:` annotations within the project itself.
+For more thought process and improvements see `// TODO:` and `// NOTE:` annotations within the project itself.
