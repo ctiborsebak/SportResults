@@ -38,7 +38,7 @@ public actor MatchResultsRemoteService: DataServiceType {
         let snapshot = try await db.collection(collectionName).getDocuments()
 
         return try snapshot.documents.compactMap { document in
-            try? document.data(as: MatchResultRemoteDto.self)
+            try document.data(as: MatchResultRemoteDto.self)
         }
         .map(converter.toDomain)
     }
@@ -46,4 +46,5 @@ public actor MatchResultsRemoteService: DataServiceType {
 
 public enum MatchResultRemoteServiceError: Error {
     case documentIdMismatch
+    case typeMismatch
 }
