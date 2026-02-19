@@ -97,8 +97,8 @@ struct MatchSectionView: View {
             Spacer()
 
             TextField("key_score".localized, value: $inputState.awayParticipantScore, format: .number)
-                .onChange(of: inputState.homeParticipantScore) { _, newScore in
-                    enforceThreeDigitLimit(for: &inputState.homeParticipantScore, newValue: newScore)
+                .onChange(of: inputState.awayParticipantScore) { _, newScore in
+                    enforceThreeDigitLimit(for: &inputState.awayParticipantScore, newValue: newScore)
                 }
                 .multilineTextAlignment(.trailing)
         }
