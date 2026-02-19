@@ -8,7 +8,8 @@ extension Container {
     var addResultViewModel: Factory<AddResultViewModel> {
         Factory(self) { @MainActor in
             AddResultViewModel(
-                saveResultUseCase: self.saveResultUseCase()
+                saveResultUseCase: self.saveResultUseCase(),
+                addResultInputStateConverter: self.addResultInputStateConverter()
             )
         }
     }
@@ -21,5 +22,11 @@ extension Container {
                 repository: self.matchResultsRepository()
             )
         }
+    }
+
+    // MARK: - Converters
+
+    var addResultInputStateConverter: Factory<AddResultInputStateConverter> {
+        self { AddResultInputStateConverter() }
     }
 }

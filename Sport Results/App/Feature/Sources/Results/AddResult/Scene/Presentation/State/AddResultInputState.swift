@@ -1,8 +1,8 @@
 import Domain
 import Foundation
 
-struct AddResultInputState {
-    var selectedDiscipline: Discipline = .soccer
+struct AddResultInputState: Equatable {
+    var selectedDiscipline: Discipline = .basketball
     var matchName: String = ""
     var location: String = ""
     var date: Date = .now
@@ -19,14 +19,15 @@ struct AddResultInputState {
         !(hours == 0 && minutes == 0 && seconds == 0)
     }
 
+    // TODO: Calendar should be injected as a dependency to improve testability, and as such a AddResultInputStateValidator object would be in place and used as a dependency in AddResultViewModel.
     var didChange: Bool {
-        let unchangedInput = AddResultInputState()
+        var unchangedInput = AddResultInputState()
 
-        return matchName != unchangedInput.matchName
-        || location != unchangedInput.location
-        || hasDurationChanged
-        || homeParticipantName != unchangedInput.homeParticipantName
-        || awayParticipantName != unchangedInput.awayParticipantName
+        if Calendar.current.isDate(self.date, inSameDayAs: unchangedInput.date) {
+            unchangedInput.date = self.date
+        }
+
+        return self != unchangedInput
     }
 
     var areMandatoryInputsFilled: Bool {

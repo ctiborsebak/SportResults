@@ -106,4 +106,27 @@ struct AddResultInputStateTests {
 
         #expect(state.areMandatoryInputsFilled)
     }
+
+    @Test
+    func state_should_register_change_for_next_day() {
+        var state = AddResultInputState()
+        state.date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        #expect(state.didChange)
+    }
+
+    @Test
+    func state_should_register_change_for_previous_day() {
+        var state = AddResultInputState()
+        state.date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        #expect(state.didChange)
+    }
+
+    @Test
+    func state_should_not_register_change_for_same_day_time_difference() {
+        var state = AddResultInputState()
+
+        state.date = Calendar.current.date(bySettingHour: 12, minute: 34, second: 56, of: state.date)!
+
+        #expect(!state.didChange)
+    }
 }

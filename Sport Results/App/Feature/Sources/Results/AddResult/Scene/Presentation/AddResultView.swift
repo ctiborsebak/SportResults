@@ -35,8 +35,11 @@ struct AddResultView: View {
         .onChange(of: viewModel.saveModalResult) { _, newResult in
             handleSaveResultModal(newResult)
         }
-        .onChange(of: viewModel.alertConfiguration) { _, configuration in
-            handleAlerts(configuration)
+        .onChange(of: viewModel.isPresentingProvideAllInputsAlert) { _, isPresenting in
+            handleProvideAllResultsAlert(isPresenting)
+        }
+        .onChange(of: viewModel.isPresentingDiscardChangesAlert) { _, isPresenting in
+            handleDiscardChangesAlert(isPresenting)
         }
         .onChange(of: viewModel.isDismissing) { _, isDismissing in
             handleDismiss(isDismissing)
@@ -94,10 +97,37 @@ private extension AddResultView {
         )
     }
 
-    private func handleAlerts(_ configuration: AlertConfiguration?) {
-        guard let configuration else { return }
+    private func handleProvideAllResultsAlert(_ isPresenting: Bool) {
+        guard isPresenting else { return }
 
-        navigator?.presentAlert(configuration: configuration)
+        let alertConfiguration = AlertConfiguration(
+            title: "key_provide_all_fields_alert".localized,
+            actions: [
+                AlertAction(title: "key_close".localized) {
+                    viewModel.hideAlert()
+                }
+            ]
+        )
+
+        navigator?.presentAlert(configuration: alertConfiguration)
+    }
+
+    private func handleDiscardChangesAlert(_ isPresenting: Bool) {
+        guard isPresenting else { return }
+
+        let alertConfiguration = AlertConfiguration(
+            title: "key_discard_confirm_alert".localized,
+            actions: [
+                .init(title: "key_discard".localized, role: .destructive) {
+                    viewModel.dismiss()
+                },
+                .init(title: "key_close".localized, role: .cancel) {
+                    viewModel.hideAlert()
+                }
+            ]
+        )
+
+        navigator?.presentAlert(configuration: alertConfiguration)
     }
 
     private func handleDismiss(_ isDismissing: Bool) {
@@ -110,7 +140,8 @@ private extension AddResultView {
 #Preview("AddResultsView") {
     AddResultView(
         viewModel: AddResultViewModel(
-            saveResultUseCase: PreviewSaveResultUseCase()
+            saveResultUseCase: PreviewSaveResultUseCase(),
+            addResultInputStateConverter: AddResultInputStateConverter()
         )
     )
 }
