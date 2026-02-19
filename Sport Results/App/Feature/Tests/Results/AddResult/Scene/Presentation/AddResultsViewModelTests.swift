@@ -14,12 +14,11 @@ struct AddResultViewModelTests {
     @Test
     func `save_should_show_alert_when_mandatory_inputs_are_missing`() async throws {
         let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel(saveResultUseCase: useCase)
 
         await viewModel.save()
 
-        #expect(viewModel.alertConfiguration != nil)
-        #expect(viewModel.alertConfiguration?.title == "key_provide_all_fields_alert".localized)
+        #expect(viewModel.isPresentingProvideAllInputsAlert)
 
         let savedResult = await useCase.savedResult
         #expect(savedResult == nil)
@@ -28,7 +27,7 @@ struct AddResultViewModelTests {
     @Test
     func `save_should_succeed_when_inputs_are_valid`() async throws {
         let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel(saveResultUseCase: useCase)
 
         fillMandatoryInputs(for: &viewModel.inputState)
 
@@ -47,7 +46,7 @@ struct AddResultViewModelTests {
         let useCase = mockUseCase()
         await useCase.setError(TestError.simulated)
 
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel(saveResultUseCase: useCase)
 
         fillMandatoryInputs(for: &viewModel.inputState)
 
@@ -63,34 +62,31 @@ struct AddResultViewModelTests {
 
     @Test
     func `discard_should_dismiss_when_no_changes_made`() async throws {
-        let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel()
 
         viewModel.discard()
 
         try await Task.sleep(for: .seconds(.alertDismissDelay + 0.1))
 
         #expect(viewModel.isDismissing == true)
-        #expect(viewModel.alertConfiguration == nil)
+        #expect(!viewModel.isPresentingProvideAllInputsAlert)
     }
 
     @Test
     func `discard_should_show_alert_when_changes_made`() async throws {
-        let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel()
 
         simulateChanges(for: &viewModel.inputState)
 
         viewModel.discard()
 
-        #expect(viewModel.alertConfiguration?.title == "key_discard_confirm_alert".localized)
+        #expect(viewModel.isPresentingDiscardChangesAlert)
         #expect(viewModel.isDismissing == false)
     }
 
     @Test
     func `should_reset_save_modal`() async throws {
-        let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel()
 
         fillMandatoryInputs(for: &viewModel.inputState)
         await viewModel.save()
@@ -103,19 +99,29 @@ struct AddResultViewModelTests {
 
     @Test
     func `should_hide_alert`() async throws {
-        let useCase = mockUseCase()
-        let viewModel = AddResultViewModel(saveResultUseCase: useCase)
+        let viewModel = makeViewModel()
 
         await viewModel.save()
-        #expect(viewModel.alertConfiguration != nil)
+        #expect(viewModel.isPresentingProvideAllInputsAlert)
 
         viewModel.hideAlert()
 
-        #expect(viewModel.alertConfiguration == nil)
+        #expect(!viewModel.isPresentingProvideAllInputsAlert)
     }
 }
 
 // MARK: - Helpers & Factories
+
+@MainActor
+private func makeViewModel(
+    saveResultUseCase: SaveResultUseCaseType = mockUseCase(),
+    addResultInputStateConverter: AddResultInputStateConverter = AddResultInputStateConverter()
+) -> AddResultViewModel {
+    .init(
+        saveResultUseCase: saveResultUseCase,
+        addResultInputStateConverter: addResultInputStateConverter
+    )
+}
 
 private func mockUseCase() -> MockSaveResultUseCase {
     .init()

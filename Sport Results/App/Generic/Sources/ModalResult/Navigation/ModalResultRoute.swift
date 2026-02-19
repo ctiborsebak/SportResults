@@ -1,3 +1,1 @@
-public enum ModalResultRoute {
-
-}
+public enum ModalResultRoute {}
