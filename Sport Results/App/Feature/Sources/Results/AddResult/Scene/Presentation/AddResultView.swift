@@ -78,16 +78,17 @@ private extension AddResultView {
 
         navigator?.presentModalWithResult(
             AddResultRoute.result(resultInput),
-            onDismiss: { (action: ModalResultAction?) in
-                viewModel.resetSaveModal()
+            onDismiss: { [weak viewModel] (action: ModalResultAction?) in
+                viewModel?.resetSaveModal()
 
                 switch action {
 
                 case .success:
                     navigator?.dismissModal(returning: AddResultAction.success)
+
                 case .retry:
                     Task {
-                        await viewModel.save()
+                        await viewModel?.save()
                     }
 
                 default:

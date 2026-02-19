@@ -134,6 +134,26 @@ struct ResultsViewModelTests {
 
         #expect(viewModel.deleteModalResultInput == nil)
     }
+
+    @Test
+    func `should_reset_isShowingError_on_subsequent_successful_fetch`() async throws {
+        let fetchUseCase = mockFetchUseCase()
+        let deleteUseCase = mockDeleteUseCase()
+
+        let viewModel = ResultsViewModel(
+            fetchResultsUseCase: fetchUseCase,
+            deleteResultUseCase: deleteUseCase
+        )
+
+        await fetchUseCase.setError(TestError.simulated)
+        await viewModel.fetchResults()
+        #expect(viewModel.isShowingError == true)
+
+        await fetchUseCase.clearError()
+        await viewModel.fetchResults()
+
+        #expect(viewModel.isShowingError == false)
+    }
 }
 
 // MARK: - Helpers & Factories
@@ -169,6 +189,10 @@ private final actor MockFetchResultsUseCase: FetchResultsUseCaseType {
 
     func setError(_ error: Error) {
         self.errorStub = error
+    }
+
+    func clearError() {
+        self.errorStub = nil
     }
 }
 

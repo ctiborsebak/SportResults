@@ -22,7 +22,10 @@ let package = Package(
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "Localizations", package: "Localizations")
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Colors/Colors.xcassets")
+            ]
         )
     ]
 )

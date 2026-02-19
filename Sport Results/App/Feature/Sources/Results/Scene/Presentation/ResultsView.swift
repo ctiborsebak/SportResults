@@ -123,15 +123,15 @@ private extension ResultsView {
 
         navigator?.presentModalWithResult(
             ResultsRoute.result(resultInput),
-            onDismiss: { (action: ModalResultAction?) in
-                viewModel.resetDeleteModal()
+            onDismiss: { [weak viewModel] (action: ModalResultAction?) in
+                viewModel?.resetDeleteModal()
 
                 switch action {
                 case .retry:
-                    guard let failedDeletion = viewModel.failedDeletion else { return }
+                    guard let failedDeletion = viewModel?.failedDeletion else { return }
 
                     Task {
-                        await viewModel.deleteResult(failedDeletion)
+                        await viewModel?.deleteResult(failedDeletion)
                     }
                 default:
                     break

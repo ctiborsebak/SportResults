@@ -60,6 +60,7 @@ final class ResultsViewModel {
     }
 
     func fetchResults() async {
+        isShowingError = false
         defer { isLoading = false }
         isLoading = true
 
