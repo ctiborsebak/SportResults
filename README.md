@@ -1,6 +1,27 @@
-# Sport Results app
+# Project Title & Overview
 
-A simple application that leverages Swift Data and Firebase Firestore to display available sports match results created by the user. It serves as a demo application. Adhering to the principles of Clean Architecture.
+Sport Results is an iOS demo application for creating, storing, and viewing sports match results. It demonstrates a modular Swift package-based architecture with clear separation between domain models, feature logic, shared infrastructure, UI theme/localization utilities, and data persistence providers (SwiftData for local storage and Firebase Firestore for remote storage).
+
+## Basic principles
+- Clean Architecture style layering: Domain (core models) -> Generic (shared infrastructure) -> Feature (business use cases + UI flows) -> App entry point.
+- Feature-first modularization: each concern is split into dedicated Swift packages.
+- Dependency Injection via Factory container modules/composers, while keeping ViewModels framework-agnostic.
+- Navigation abstraction through a custom Navigator and NavigationContainer to avoid coupling navigation logic to feature ViewModels.
+- Converter-based mapping between domain models and local/remote DTOs.
+
+## Dependencies
+### External
+- Factory (hmlongco/Factory): dependency injection container.
+- Firebase iOS SDK (Firestore): remote persistence.
+### Apple Frameworks
+- SwiftUI, Observation, Foundation.
+- SwiftData (local persistence).
+### Internal Swift Packages
+- Domain: core models.
+- Generic: architecture, navigation, persistence, modal utilities.
+- Feature (Results product): app feature UI + use cases.
+- Theme: UI components/colors/extensions.
+- Localizations: localization helpers/resources.
 
 ## Thought process
 - A simple automated tests pipeline is in place, see <a href="https://github.com/ctiborsebak/SportResults/blob/develop/.github/workflows/tests.yml">tests.yml<a>
