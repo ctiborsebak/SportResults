@@ -4,9 +4,10 @@ import Theme
 
 struct GeneralSectionView: View {
     @Binding var inputState: AddResultInputState
+    let spacing = CGFloat.small
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .small) {
+        VStack(alignment: .leading, spacing: spacing) {
             sectionTitle
 
             Card {
@@ -31,6 +32,7 @@ struct GeneralSectionView: View {
                 }
             }
         }
+        .textFieldStyle(.roundedBorder)
     }
 
     private var sectionTitle: some View {
@@ -42,10 +44,14 @@ struct GeneralSectionView: View {
     }
 
     private var disciplinePicker: some View {
-        HStack {
+        HStack(spacing: .xxsmall) {
             "key_picker_title".localized.text
 
             Spacer()
+
+            inputState.selectedDiscipline.icon
+                .contentTransition(.symbolEffect(.replace))
+                .foregroundStyle(inputState.persistenceKind.textColor)
 
             Picker("key_picker_title".localized, selection: $inputState.selectedDiscipline) {
                 ForEach(Discipline.allCases) { discipline in
@@ -56,16 +62,26 @@ struct GeneralSectionView: View {
     }
 
     private var nameTextField: some View {
-        TextField("key_placeholder_match_name".localized, text: $inputState.matchName)
+        TextField(
+            "",
+            text: $inputState.matchName,
+            prompt: Text("key_placeholder_match_name".localized)
+                .foregroundStyle(Color.Semantic.error)
+        )
     }
 
     private var locationTextField: some View {
-        TextField("key_placeholder_match_location".localized, text: $inputState.location)
+        TextField(
+            "",
+            text: $inputState.location,
+            prompt: Text("key_placeholder_match_location".localized)
+                .foregroundStyle(Color.Semantic.error)
+        )
     }
 
     private var datePicker: some View {
         DatePicker(
-            "Datum",
+            "key_date".localized,
             selection: $inputState.date,
             displayedComponents: [.date]
         )

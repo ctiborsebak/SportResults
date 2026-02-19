@@ -15,21 +15,13 @@ public final class MatchResultsRepository: MatchResultsRepositoryType {
     public func save(_ result: MatchResult) async throws {
         let service = service(for: result.persistenceKind)
 
-        do {
-            try await service.save(result)
-        } catch let error {
-            throw result.persistenceKind.error(underlyingError: error)
-        }
+        try await service.save(result)
     }
 
     public func delete(_ result: MatchResult) async throws {
         let service = service(for: result.persistenceKind)
 
-        do {
-            try await service.delete(id: result.id)
-        } catch let error {
-            throw result.persistenceKind.error(underlyingError: error)
-        }
+        try await service.delete(id: result.id)
     }
 
     public func fetch(_ kinds: Set<PersistenceKind>) async throws -> [MatchResult] {
@@ -38,11 +30,7 @@ public final class MatchResultsRepository: MatchResultsRepositoryType {
                 let service = service(for: kind)
 
                 group.addTask {
-                    do {
-                        return try await service.fetchAll()
-                    } catch let error {
-                        throw kind.error(underlyingError: error)
-                    }
+                    try await service.fetchAll()
                 }
             }
 
@@ -58,24 +46,6 @@ public final class MatchResultsRepository: MatchResultsRepositoryType {
             return localStorageService
         case .remote:
             return remoteStorageService
-        }
-    }
-}
-
-// NOTE: Errors should be more specific and propagated trough different layers (such as service can have a networking error, converter a conversion error etc.), these underlying errors then become much more traceable and "debuggable".
-// They can also be more generic such as AppError, RepositoryError etc, and these domain errors can be tied to specific captions / icons, etc.
-enum MatchResultsRepositoryError: Error {
-  case local(underlyingError: Error)
-  case remote(underlyingError: Error)
-}
-
-private extension PersistenceKind {
-    func error(underlyingError: Error) -> MatchResultsRepositoryError {
-        switch self {
-        case .local:
-            return .local(underlyingError: underlyingError)
-        case .remote:
-            return .remote(underlyingError: underlyingError)
         }
     }
 }

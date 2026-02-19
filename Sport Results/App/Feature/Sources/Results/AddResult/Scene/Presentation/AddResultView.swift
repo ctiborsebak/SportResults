@@ -12,7 +12,7 @@ struct AddResultView: View {
 
     var body: some View {
         VStack(spacing: .small) {
-            closeButton
+            discardButton
                 .padding(.horizontal, .medium)
 
             ScrollView {
@@ -35,6 +35,12 @@ struct AddResultView: View {
         .onChange(of: viewModel.saveModalResult) { _, newResult in
             handleSaveResultModal(newResult)
         }
+        .onChange(of: viewModel.alertConfiguration) { _, configuration in
+            handleAlerts(configuration)
+        }
+        .onChange(of: viewModel.isDismissing) { _, isDismissing in
+            handleDismiss(isDismissing)
+        }
     }
 }
 
@@ -52,11 +58,10 @@ private extension AddResultView {
         )
     }
 
-    private var closeButton: some View {
+    private var discardButton: some View {
         AppButton(
             onClickAction: {
-                // TODO: Should display an alert so that the user MUST confirm match result discard
-                navigator?.dismissModal()
+                viewModel.discard()
             },
             icon: Image(systemName: "xmark"),
             caption: "key_discard".localized
@@ -79,8 +84,6 @@ private extension AddResultView {
                     navigator?.dismissModal(returning: AddResultAction.success)
                 case .retry:
                     Task {
-                        // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation, else there can be unexpected behavior.
-                        try await Task.sleep(for: .seconds(.animationDelay))
                         await viewModel.save()
                     }
 
@@ -89,6 +92,18 @@ private extension AddResultView {
                 }
             }
         )
+    }
+
+    private func handleAlerts(_ configuration: AlertConfiguration?) {
+        guard let configuration else { return }
+
+        navigator?.presentAlert(configuration: configuration)
+    }
+
+    private func handleDismiss(_ isDismissing: Bool) {
+        guard isDismissing else { return }
+
+        navigator?.dismissModal()
     }
 }
 

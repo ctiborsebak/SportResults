@@ -60,7 +60,6 @@ final class ResultsViewModel {
     }
 
     func fetchResults() async {
-        // TODO: Check for network and if no internet get only local records + present disclaimer at the top of the screen
         defer { isLoading = false }
         isLoading = true
 
@@ -71,6 +70,8 @@ final class ResultsViewModel {
              filterResults(by: selectedFilter)
              
          } catch {
+             // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation before presenting a new modal, else there can be unexpected behavior.
+             try? await Task.sleep(for: .seconds(.modalDismissalDelay))
              isShowingError = true
          }
     }

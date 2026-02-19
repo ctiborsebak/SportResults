@@ -18,7 +18,7 @@ public struct Card<Content: View>: View {
             .frame(maxWidth: .infinity)
             .padding(.small)
             .background(
-                RoundedRectangle(cornerRadius: .medium,)
+                RoundedRectangle(cornerRadius: .medium)
                     .fill(accentColor)
             )
     }

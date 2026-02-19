@@ -40,23 +40,6 @@ struct MatchResultsRepositoryTests {
     }
 
     @Test
-    func should_throw_repository_error_when_save_fails() async throws {
-        let localMock = MockDataService()
-        let repository = makeRepository(local: localMock)
-        let expectedError = TestError.generic
-        await localMock.set(error: expectedError)
-
-        try await confirmation { confirm in
-            do {
-                try await repository.save(.mock(persistenceKind: .local))
-            } catch MatchResultsRepositoryError.local(let underlying) {
-                #expect(underlying as? TestError == expectedError)
-                confirm()
-            }
-        }
-    }
-
-    @Test
     func should_delete_from_correct_service_based_on_kind() async throws {
         let remoteMock = MockDataService()
         let repository = makeRepository(remote: remoteMock)

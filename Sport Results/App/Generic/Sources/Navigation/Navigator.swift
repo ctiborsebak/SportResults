@@ -6,6 +6,7 @@ public final class Navigator {
     var path: [AnyHashable] = []
     var presentedModals: [ModalDestination] = []
     var presentedFullScreen: AnyHashable?
+    var presentedAlert: AlertConfiguration?
     var dismissClosure: (() -> Void)?
 
     public init() {}
@@ -74,6 +75,16 @@ public final class Navigator {
 
     public func dismissFullScreen() {
         presentedFullScreen = nil
+    }
+
+    public func presentAlert(
+        configuration: AlertConfiguration
+    ) {
+        presentedAlert = configuration
+    }
+
+    public func dismissAlert() {
+        presentedAlert = nil
     }
 }
 

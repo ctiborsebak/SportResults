@@ -131,8 +131,6 @@ private extension ResultsView {
                     guard let failedDeletion = viewModel.failedDeletion else { return }
 
                     Task {
-                        // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation, else there can be unexpected behavior.
-                        try await Task.sleep(for: .seconds(.animationDelay))
                         await viewModel.deleteResult(failedDeletion)
                     }
                 default:
