@@ -71,8 +71,6 @@ final class ResultsViewModel {
              filterResults(by: selectedFilter)
              
          } catch {
-             // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation before presenting a new modal, else there can be unexpected behavior.
-             try? await Task.sleep(for: .seconds(.modalDismissalDelay))
              isShowingError = true
          }
     }
