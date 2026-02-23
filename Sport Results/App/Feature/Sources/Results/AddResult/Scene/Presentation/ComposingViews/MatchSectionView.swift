@@ -4,6 +4,21 @@ import Theme
 
 struct MatchSectionView: View {
     @Binding var inputState: AddResultInputState
+    var homeTeamNamePlaceholderColor = Color.Text.tertiary
+    var awayTeamNamePlaceholderColor = Color.Text.tertiary
+    var durationTitleColor = Color.Text.primary
+
+    init(
+        inputState: Binding<AddResultInputState>,
+        inputStateValidatorOuput: AddResultInputStateValidatorOutput?
+    ) {
+        self._inputState = inputState
+
+        guard let inputStateValidatorOuput else { return }
+        homeTeamNamePlaceholderColor = inputStateValidatorOuput.isHomeParticipantNameValid ? .Text.tertiary : .Semantic.error
+        awayTeamNamePlaceholderColor = inputStateValidatorOuput.isAwayParticipantNameValid ? .Text.tertiary : .Semantic.error
+        durationTitleColor = inputState.wrappedValue.hasDurationChanged ? .Text.primary : .Semantic.error
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: .small) {
@@ -44,9 +59,7 @@ struct MatchSectionView: View {
         HStack {
             "key_duration".localized
                 .text
-                .foregroundStyle(
-                    inputState.hasDurationChanged ? Color.Text.primary : Color.Semantic.error
-                )
+                .foregroundStyle(durationTitleColor)
 
             Spacer()
 
@@ -73,7 +86,7 @@ struct MatchSectionView: View {
             "",
             text: $inputState.homeParticipantName,
             prompt: Text("key_home".localized)
-                .foregroundStyle(Color.Semantic.error)
+                .foregroundStyle(homeTeamNamePlaceholderColor)
         )
     }
 
@@ -82,7 +95,7 @@ struct MatchSectionView: View {
             "",
             text: $inputState.awayParticipantName,
             prompt: Text("key_away".localized)
-                .foregroundStyle(Color.Semantic.error)
+                .foregroundStyle(awayTeamNamePlaceholderColor)
         )
         .multilineTextAlignment(.trailing)
     }
@@ -118,6 +131,13 @@ struct MatchSectionView: View {
 
 #Preview("MatchSectionView") {
     MatchSectionView(
-        inputState: .constant(.init())
+        inputState: .constant(.init()),
+        inputStateValidatorOuput: .init(
+            isMatchNameValid: true,
+            isLocationNameValid: true,
+            isDurationValid: false,
+            isHomeParticipantNameValid: false,
+            isAwayParticipantNameValid: true
+        )
     )
 }

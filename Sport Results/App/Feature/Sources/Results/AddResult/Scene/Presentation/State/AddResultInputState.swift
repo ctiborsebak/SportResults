@@ -29,12 +29,4 @@ struct AddResultInputState: Equatable {
 
         return self != unchangedInput
     }
-
-    var areMandatoryInputsFilled: Bool {
-        !matchName.isEmpty
-        && !location.isEmpty
-        && hasDurationChanged
-        && !homeParticipantName.isEmpty
-        && !awayParticipantName.isEmpty
-    }
 }

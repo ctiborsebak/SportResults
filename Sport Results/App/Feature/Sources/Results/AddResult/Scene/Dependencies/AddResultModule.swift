@@ -9,7 +9,8 @@ extension Container {
         Factory(self) { @MainActor in
             AddResultViewModel(
                 saveResultUseCase: self.saveResultUseCase(),
-                addResultInputStateConverter: self.addResultInputStateConverter()
+                addResultInputStateConverter: self.addResultInputStateConverter(),
+                addResultInputStateValidator: self.addResultInputStateValidator()
             )
         }
     }
@@ -28,5 +29,11 @@ extension Container {
 
     var addResultInputStateConverter: Factory<AddResultInputStateConverter> {
         self { AddResultInputStateConverter() }
+    }
+
+    // MARK: - Validators
+
+    var addResultInputStateValidator: Factory<AddResultInputStateValidator> {
+        self { AddResultInputStateValidator() }
     }
 }

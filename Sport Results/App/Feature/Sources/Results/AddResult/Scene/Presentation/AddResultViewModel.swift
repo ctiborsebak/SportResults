@@ -11,13 +11,17 @@ final class AddResultViewModel {
     private let saveResultUseCase: SaveResultUseCaseType
     @ObservationIgnored
     private let addResultInputStateConverter: AddResultInputStateConverter
+    @ObservationIgnored
+    private let addResultInputStateValidator: AddResultInputStateValidator
 
     init(
         saveResultUseCase: SaveResultUseCaseType,
-        addResultInputStateConverter: AddResultInputStateConverter
+        addResultInputStateConverter: AddResultInputStateConverter,
+        addResultInputStateValidator: AddResultInputStateValidator
     ) {
         self.saveResultUseCase = saveResultUseCase
         self.addResultInputStateConverter = addResultInputStateConverter
+        self.addResultInputStateValidator = addResultInputStateValidator
     }
 
     var inputState = AddResultInputState()
@@ -27,9 +31,12 @@ final class AddResultViewModel {
     var isPresentingProvideAllInputsAlert = false
     var isPresentingDiscardChangesAlert = false
     var isDismissing = false
+    var addResultValidatorOutput: AddResultInputStateValidatorOutput?
 
     func save() async {
-        guard inputState.areMandatoryInputsFilled else {
+        addResultValidatorOutput = addResultInputStateValidator.validate(inputState)
+
+        guard addResultValidatorOutput?.isValid == true else {
             isPresentingProvideAllInputsAlert = true
             return
         }
