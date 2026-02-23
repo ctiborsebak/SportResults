@@ -113,11 +113,13 @@ struct AddResultViewModelTests {
 @MainActor
 private func makeViewModel(
     saveResultUseCase: SaveResultUseCaseType = mockUseCase(),
-    addResultInputStateConverter: AddResultInputStateConverter = AddResultInputStateConverter()
+    addResultInputStateConverter: AddResultInputStateConverter = AddResultInputStateConverter(),
+    addResultInputStateValidator: AddResultInputStateValidator = AddResultInputStateValidator()
 ) -> AddResultViewModel {
     .init(
         saveResultUseCase: saveResultUseCase,
-        addResultInputStateConverter: addResultInputStateConverter
+        addResultInputStateConverter: addResultInputStateConverter,
+        addResultInputStateValidator: addResultInputStateValidator
     )
 }
 

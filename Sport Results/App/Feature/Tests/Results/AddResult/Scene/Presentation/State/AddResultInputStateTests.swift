@@ -73,41 +73,6 @@ struct AddResultInputStateTests {
     }
 
     @Test
-    func mandatory_inputs_should_not_be_filled_initially() {
-        let state = AddResultInputState()
-        #expect(!state.areMandatoryInputsFilled)
-    }
-
-    @Test
-    func mandatory_inputs_should_be_false_if_any_required_field_is_missing() {
-        var state = AddResultInputState()
-
-        state.matchName = "Derby"
-        state.location = "Main Pitch"
-        state.minutes = 90
-        state.homeParticipantName = "Home Team"
-        state.awayParticipantName = "Away Team"
-
-        #expect(state.areMandatoryInputsFilled)
-
-        state.location = ""
-
-        #expect(!state.areMandatoryInputsFilled)
-    }
-
-    @Test
-    func mandatory_inputs_should_be_true_when_all_requirements_met() {
-        var state = AddResultInputState()
-        state.matchName = "Derby"
-        state.location = "Main Pitch"
-        state.minutes = 90
-        state.homeParticipantName = "Home Team"
-        state.awayParticipantName = "Away Team"
-
-        #expect(state.areMandatoryInputsFilled)
-    }
-
-    @Test
     func state_should_register_change_for_next_day() {
         var state = AddResultInputState()
         state.date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!

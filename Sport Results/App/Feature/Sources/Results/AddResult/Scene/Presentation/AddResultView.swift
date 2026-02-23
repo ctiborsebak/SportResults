@@ -17,9 +17,15 @@ struct AddResultView: View {
 
             ScrollView {
                 VStack(spacing: .large) {
-                    GeneralSectionView(inputState: $viewModel.inputState)
+                    GeneralSectionView(
+                        inputState: $viewModel.inputState,
+                        inputStateValidatorOuput: viewModel.addResultValidatorOutput
+                    )
 
-                    MatchSectionView(inputState: $viewModel.inputState)
+                    MatchSectionView(
+                        inputState: $viewModel.inputState,
+                        inputStateValidatorOuput: viewModel.addResultValidatorOutput
+                    )
 
                     saveButton
                 }
@@ -142,7 +148,8 @@ private extension AddResultView {
     AddResultView(
         viewModel: AddResultViewModel(
             saveResultUseCase: PreviewSaveResultUseCase(),
-            addResultInputStateConverter: AddResultInputStateConverter()
+            addResultInputStateConverter: AddResultInputStateConverter(),
+            addResultInputStateValidator: AddResultInputStateValidator()
         )
     )
 }

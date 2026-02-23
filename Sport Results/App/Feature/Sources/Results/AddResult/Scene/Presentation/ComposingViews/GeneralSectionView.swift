@@ -5,6 +5,19 @@ import Theme
 struct GeneralSectionView: View {
     @Binding var inputState: AddResultInputState
     let spacing = CGFloat.small
+    var namePlaceholderColor = Color.Text.tertiary
+    var locationPlaceholderColor = Color.Text.tertiary
+
+    init(
+        inputState: Binding<AddResultInputState>,
+        inputStateValidatorOuput: AddResultInputStateValidatorOutput?
+    ) {
+        self._inputState = inputState
+
+        guard let inputStateValidatorOuput else { return }
+        namePlaceholderColor = inputStateValidatorOuput.isMatchNameValid ? .Text.tertiary : .Semantic.error
+        locationPlaceholderColor = inputStateValidatorOuput.isLocationNameValid ? .Text.tertiary : .Semantic.error
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
@@ -66,7 +79,7 @@ struct GeneralSectionView: View {
             "",
             text: $inputState.matchName,
             prompt: Text("key_placeholder_match_name".localized)
-                .foregroundStyle(Color.Semantic.error)
+                .foregroundStyle(namePlaceholderColor)
         )
     }
 
@@ -75,7 +88,7 @@ struct GeneralSectionView: View {
             "",
             text: $inputState.location,
             prompt: Text("key_placeholder_match_location".localized)
-                .foregroundStyle(Color.Semantic.error)
+                .foregroundStyle(locationPlaceholderColor)
         )
     }
 
@@ -104,6 +117,13 @@ struct GeneralSectionView: View {
 
 #Preview("GeneralSectionView") {
     GeneralSectionView(
-        inputState: .constant(.init())
+        inputState: .constant(.init()),
+        inputStateValidatorOuput: .init(
+            isMatchNameValid: true,
+            isLocationNameValid: false,
+            isDurationValid: true,
+            isHomeParticipantNameValid: true,
+            isAwayParticipantNameValid: true
+        )
     )
 }
