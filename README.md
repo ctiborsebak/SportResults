@@ -39,7 +39,6 @@ In orthodox clean architecture all converters should have their own interfaces /
 Since Firestore persists data locally and then synchronizes them with the server-side database upon successful Internet connection, there is no need to make the app function in 'Local' mode only when the user is offline, this is handled for us by the Firebase SDK.
 
 ## TODOs / Improvements
-- Issues with native presentation animations when presenting multiple view variants over each other (modal over modal, alert over modal, etc.). These are now delayed by hardcoded values, but should be fixed on a conceptual level within `Navigation` target.
 - Items are deleted by List's native swipe gesture. This might not be communicated clearly to the user, so an explicit delete button would be more user-friendly.
 
 ## Miscleanious
