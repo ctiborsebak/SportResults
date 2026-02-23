@@ -42,8 +42,6 @@ final class AddResultViewModel {
             try await saveResultUseCase.save(matchResult)
             saveModalResult = successModalResultInput
         } catch {
-            // NOTE: Edge case -> In case of instantinaious result we have to wait for the modal dismissal animation before presenting a new modal, else there can be unexpected behavior.
-            try? await Task.sleep(for: .seconds(.modalDismissalDelay))
             saveModalResult = failureModalResultInput
         }
     }
@@ -67,11 +65,7 @@ final class AddResultViewModel {
     }
 
     func dismiss() {
-        Task {
-            // TODO: Again, we need to delay the dismissal (wait for alert to pop) in order to preserve the nice native sheet dismissal animation. At this point, this logic should be revisited a bit and most likely solved inside Navigator / NavigationContainer itself.
-            try? await Task.sleep(for: .seconds(.alertDismissDelay))
-            isDismissing = true
-        }
+        isDismissing = true
     }
 
     private var successModalResultInput: ModalResultInput {

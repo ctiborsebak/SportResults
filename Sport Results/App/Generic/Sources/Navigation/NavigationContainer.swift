@@ -1,5 +1,4 @@
 import SwiftUI
-import Observation
 
 public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View {
     @State var navigator: Navigator
@@ -27,7 +26,7 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
                 }
         }
         .sheet(item: firstModalBinding) {
-            navigator.handleModalDismiss(at: 0)
+            navigator.handlePresentationDismissCompletion()
         } content: { modal in
             ModalStackView(
                 navigator: navigator,
@@ -38,30 +37,7 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
         .fullScreenCover(item: $navigator.presentedFullScreen) { destination in
             factory.makeView(for: destination)
         }
-
-        .alert(
-            navigator.presentedAlert?.title ?? "",
-            isPresented: Binding(
-                get: {
-                    navigator.presentedAlert != nil
-                    && navigator.presentedModals.isEmpty
-                },
-                set: { isPresented in
-                    if !isPresented { navigator.presentedAlert = nil }
-                }
-            ),
-            presenting: navigator.presentedAlert
-        ) { alert in
-            ForEach(alert.actions) { action in
-                Button(action.title, role: action.role) {
-                    action.action?()
-                }
-            }
-        } message: { alert in
-            if let message = alert.message {
-                Text(message)
-            }
-        }
+        .navigatorAlert()
         .environment(navigator)
         .onAppear {
             navigator.dismissClosure = {

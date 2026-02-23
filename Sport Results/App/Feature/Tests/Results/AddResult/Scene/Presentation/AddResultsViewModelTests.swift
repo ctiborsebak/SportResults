@@ -66,8 +66,6 @@ struct AddResultViewModelTests {
 
         viewModel.discard()
 
-        try await Task.sleep(for: .seconds(.alertDismissDelay + 0.1))
-
         #expect(viewModel.isDismissing == true)
         #expect(!viewModel.isPresentingProvideAllInputsAlert)
     }

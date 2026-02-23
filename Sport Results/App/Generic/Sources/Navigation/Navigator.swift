@@ -1,6 +1,7 @@
 import SwiftUI
 import Observation
 
+@MainActor
 @Observable
 public final class Navigator {
     var path: [AnyHashable] = []
@@ -8,6 +9,8 @@ public final class Navigator {
     var presentedFullScreen: AnyHashable?
     var presentedAlert: AlertConfiguration?
     var dismissClosure: (() -> Void)?
+    @ObservationIgnored
+    private var deferredAfterDismissActions: [() -> Void] = []
 
     public init() {}
 
@@ -59,14 +62,10 @@ public final class Navigator {
 
     public func dismissModal(returning result: Any? = nil) {
         if let last = presentedModals.popLast() {
-            last.onDismiss?(result)
+            enqueueDeferredAfterDismissAction {
+                last.onDismiss?(result)
+            }
         }
-    }
-
-    public func handleModalDismiss(at index: Int) {
-        guard index < presentedModals.count else { return }
-        let modal = presentedModals.remove(at: index)
-        modal.onDismiss?(nil)
     }
 
     public func presentFullScreen(_ destination: AnyHashable) {
@@ -85,6 +84,45 @@ public final class Navigator {
 
     public func dismissAlert() {
         presentedAlert = nil
+    }
+
+    public func dismissAlert(perform action: (() -> Void)?) {
+        if let action {
+            enqueueDeferredAfterDismissAction(action)
+        }
+        presentedAlert = nil
+    }
+}
+
+extension Navigator {
+    func handleModalDismiss(at index: Int) {
+        guard index < presentedModals.count else { return }
+
+        let modal = presentedModals.remove(at: index)
+        modal.onDismiss?(nil)
+    }
+
+    func handleAlertDismiss() {
+        Task { @MainActor in
+            // NOTE: Native alert doesnt have onDismiss closure, we are effectively making one. This was an issue when the alert was dismissing a modal, the dismissal animation was not animated properly and looked kind of janky.
+            try? await Task.sleep(for: .seconds(0.1))
+            runNextDeferredAfterDismissActionIfNeeded()
+        }
+    }
+
+    func handlePresentationDismissCompletion() {
+        runNextDeferredAfterDismissActionIfNeeded()
+    }
+
+    private func enqueueDeferredAfterDismissAction(_ action: @escaping () -> Void) {
+        deferredAfterDismissActions.append(action)
+    }
+
+    private func runNextDeferredAfterDismissActionIfNeeded() {
+        guard !deferredAfterDismissActions.isEmpty else { return }
+
+        let deferredAction = deferredAfterDismissActions.removeFirst()
+        deferredAction()
     }
 }
 

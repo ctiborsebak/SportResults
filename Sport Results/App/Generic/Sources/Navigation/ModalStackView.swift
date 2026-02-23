@@ -32,8 +32,7 @@ struct ModalStackView<Factory: ViewFactoryType>: View {
             }
         }
         .sheet(item: nextModalBinding) {
-            let nextIndex = modalIndex + 1
-            navigator.handleModalDismiss(at: nextIndex)
+            navigator.handlePresentationDismissCompletion()
         } content: { _ in
             ModalStackView(
                 navigator: navigator,
@@ -41,28 +40,6 @@ struct ModalStackView<Factory: ViewFactoryType>: View {
                 modalIndex: modalIndex + 1
             )
         }
-        .alert(
-            navigator.presentedAlert?.title ?? "",
-            isPresented: Binding(
-                get: {
-                    let isTopModal = navigator.presentedModals.count - 1 == modalIndex
-                    return navigator.presentedAlert != nil && isTopModal
-                },
-                set: { isPresented in
-                    if !isPresented { navigator.presentedAlert = nil }
-                }
-            ),
-            presenting: navigator.presentedAlert
-        ) { alert in
-            ForEach(alert.actions) { action in
-                Button(action.title, role: action.role) {
-                    action.action?()
-                }
-            }
-        } message: { alert in
-            if let message = alert.message {
-                Text(message)
-            }
-        }
+        .navigatorAlert(modalIndex: modalIndex)
     }
 }
