@@ -11,33 +11,38 @@ struct AddResultView: View {
     @State var viewModel: AddResultViewModel
 
     var body: some View {
-        VStack(spacing: .small) {
-            discardButton
-                .padding(.horizontal, .medium)
+        ScrollView {
+            VStack(spacing: .large) {
+                GeneralSectionView(
+                    inputState: $viewModel.inputState,
+                    inputStateValidatorOuput: viewModel.addResultValidatorOutput
+                )
 
-            ScrollView {
-                VStack(spacing: .large) {
-                    GeneralSectionView(
-                        inputState: $viewModel.inputState,
-                        inputStateValidatorOuput: viewModel.addResultValidatorOutput
-                    )
+                MatchSectionView(
+                    inputState: $viewModel.inputState,
+                    inputStateValidatorOuput: viewModel.addResultValidatorOutput
+                )
 
-                    MatchSectionView(
-                        inputState: $viewModel.inputState,
-                        inputStateValidatorOuput: viewModel.addResultValidatorOutput
-                    )
-
-                    saveButton
-                }
-                .padding(.top, .medium)
-                .padding(.horizontal, .medium)
+                saveButton
             }
+            .padding(.horizontal, .medium)
         }
         .foregroundStyle(Color.Text.primary)
         .tint(viewModel.inputState.persistenceKind.textColor)
         .padding(.vertical, .medium)
         .disabled(viewModel.isLoading)
         .hideKeyboardOnTap()
+        .navigationTitle("key_add_result".localized)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    viewModel.discard()
+                } label: {
+                    "key_discard".localized.text
+                }
+            }
+        }
         .onChange(of: viewModel.saveModalResult) { _, newResult in
             handleSaveResultModal(newResult)
         }
@@ -90,7 +95,7 @@ private extension AddResultView {
                 switch action {
 
                 case .success:
-                    navigator?.dismissModal(returning: AddResultAction.success)
+                    navigator?.dismiss(returning: AddResultAction.success)
 
                 case .retry:
                     Task {
@@ -140,7 +145,7 @@ private extension AddResultView {
     private func handleDismiss(_ isDismissing: Bool) {
         guard isDismissing else { return }
 
-        navigator?.dismissModal()
+        navigator?.dismiss()
     }
 }
 

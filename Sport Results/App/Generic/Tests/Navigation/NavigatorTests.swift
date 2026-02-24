@@ -250,6 +250,34 @@ struct NavigatorTests {
     }
 
     @Test
+    func navigator_should_forward_result_when_dismissing_container() {
+        let navigator = Navigator()
+        var receivedResult: String?
+
+        navigator.dismissClosure = { result in
+            receivedResult = result as? String
+        }
+
+        navigator.dismiss(returning: "Success")
+
+        #expect(receivedResult == "Success")
+    }
+
+    @Test
+    func navigator_should_forward_nil_result_when_dismissing_container_without_result() {
+        let navigator = Navigator()
+        var didReceiveNilResult = false
+
+        navigator.dismissClosure = { result in
+            didReceiveNilResult = (result == nil)
+        }
+
+        navigator.dismiss()
+
+        #expect(didReceiveNilResult)
+    }
+
+    @Test
     func navigator_should_update_full_screen_when_presenting_full_screen() {
         let navigator = Navigator()
         let destination = "Login"

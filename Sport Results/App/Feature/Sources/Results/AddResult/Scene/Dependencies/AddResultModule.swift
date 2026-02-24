@@ -3,6 +3,12 @@ import Persistence
 
 extension Container {
 
+    // MARK: - View Factory
+
+    var addResultViewFactory: Factory<AddResultViewFactory> {
+        self { AddResultViewFactory() }
+    }
+
     // MARK: - View Models
 
     var addResultViewModel: Factory<AddResultViewModel> {

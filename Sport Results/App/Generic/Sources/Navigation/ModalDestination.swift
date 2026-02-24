@@ -1,8 +1,6 @@
 import SwiftUI
-import Observation
 
-@Observable
-public final class ModalDestination: Identifiable {
+public struct ModalDestination: Identifiable {
     public let id = UUID()
     public let destination: AnyHashable
     public let onDismiss: ((Any?) -> Void)?

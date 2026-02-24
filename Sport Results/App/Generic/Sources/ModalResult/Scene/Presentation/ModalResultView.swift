@@ -15,6 +15,7 @@ public struct ModalResultView: View {
             buttonsView
                 .tint(.Text.primary)
         }
+        .padding(.small)
     }
 
     private var labelView: some View {
