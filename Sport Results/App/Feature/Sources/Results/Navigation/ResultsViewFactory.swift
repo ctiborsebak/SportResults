@@ -5,13 +5,10 @@ import SwiftUI
 public struct ResultsViewFactory: ViewFactoryType {
 
     public func makeView(for destination: AnyHashable) -> some View {
-        switch destination as Any {
+        switch destination {
 
         case let route as ResultsRoute:
             handleResultsRoute(route)
-
-        case let route as AddResultRoute:
-            handleAddResultRoute(route)
 
         default:
             EmptyView()
@@ -25,17 +22,22 @@ private extension ResultsViewFactory {
     func handleResultsRoute(_ route: ResultsRoute) -> some View {
         switch route {
         case .addResult:
-            AddResultComposer().make()
+            AddResultHostView()
 
         case .result(let input):
             ModalResultComposer().make(input: input)
         }
     }
+}
 
-    func handleAddResultRoute(_ route: AddResultRoute) -> some View {
-        switch route {
-        case .result(let input):
-            ModalResultComposer().make(input: input)
-        }
+private struct AddResultHostView: View {
+    @Environment(Navigator.self) private var navigator: Navigator?
+
+    var body: some View {
+        AddResultComposer().make(
+            dismissClosure: { result in
+                navigator?.dismissModal(returning: result)
+            }
+        )
     }
 }

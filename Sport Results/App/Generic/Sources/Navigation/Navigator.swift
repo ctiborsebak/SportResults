@@ -8,14 +8,14 @@ public final class Navigator {
     var presentedModals: [ModalDestination] = []
     var presentedFullScreen: AnyHashable?
     var presentedAlert: AlertConfiguration?
-    var dismissClosure: (() -> Void)?
+    var dismissClosure: ((Any?) -> Void)?
     @ObservationIgnored
     private var deferredAfterDismissActions: [() -> Void] = []
 
     public init() {}
 
-    public func dismiss() {
-        dismissClosure?()
+    public func dismiss(returning result: Any? = nil) {
+        dismissClosure?(result)
     }
 
     public func navigate(to destination: AnyHashable) {

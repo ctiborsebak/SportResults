@@ -39,6 +39,7 @@ struct NoMatchResultsView: View {
 
             Spacer()
         }
+        .padding(.small)
     }
 }
 

@@ -5,15 +5,18 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
     @Environment(\.dismiss) private var dismissAction
 
     private let factory: Factory
+    private let dismissClosure: ((Any?) -> Void)?
 
     private let rootView: () -> Content
 
     public init(
         navigator: Navigator = Navigator(),
+        dismissClosure: ((Any?) -> Void)? = nil,
         factory: Factory,
         @ViewBuilder rootView: @escaping () -> Content
     ) {
         self._navigator = State(initialValue: navigator)
+        self.dismissClosure = dismissClosure
         self.factory = factory
         self.rootView = rootView
     }
@@ -40,9 +43,16 @@ public struct NavigationContainer<Factory: ViewFactoryType, Content: View>: View
         .navigatorAlert()
         .environment(navigator)
         .onAppear {
-            navigator.dismissClosure = {
-                dismissAction()
+            navigator.dismissClosure = { result in
+                if let dismissClosure {
+                    dismissClosure(result)
+                } else {
+                    dismissAction()
+                }
             }
+        }
+        .onDisappear {
+            navigator.dismissClosure = nil
         }
     }
 

@@ -30,6 +30,7 @@ struct ResultsErrorView: View {
             )
             .tint(Color.Text.primary)
         }
+        .padding(.small)
     }
 }
 
